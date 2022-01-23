@@ -1,0 +1,21 @@
+<RCC>
+    <qresource prefix="/">
+        <file>js/Tools.js</file>
+        <file>qml/QmlIncludes/CollapsibleBlock.qml</file>
+        <file>qml/QmlIncludes/DownloadBar.qml</file>
+        <file>qml/QmlIncludes/HorisontalLine.qml</file>
+        <file>qml/QmlIncludes/KawaiButton.qml</file>
+        <file>qml/QmlIncludes/LabelComboBoxCombination.qml</file>
+        <file>qml/QmlIncludes/LabelInputFieldCombination.qml</file>
+        <file>qml/QmlIncludes/LoadTabButton.qml</file>
+        <file>qml/QmlIncludes/SwitchableWindows.qml</file>
+        <file>qml/QmlIncludes/VerticalLine.qml</file>
+        <file>resources/fonts/RobotoMono-Regular.ttf</file>
+        <file>resources/icons/4272e394f5ad(instagram).png</file>
+        <file>resources/icons/apple-icon-57x57(mangarock).webp</file>
+        <file>resources/icons/apple-touch-icon(pixiv).png</file>
+        <file>resources/icons/favicon(exhentai).ico</file>
+        <file>resources/icons/favicon(nhentai).ico</file>
+        <file>resources/other/cacert.pem</file>
+    </qresource>
+</RCC>
