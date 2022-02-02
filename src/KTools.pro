@@ -66,6 +66,4 @@ unix {
 !isEmpty(target.path): INSTALLS += target
 
 unix:!macx: LIBS += -lKF5Archive
-
-RESOURCES += \
-    resource.qrc
+LIBS += -lcurl

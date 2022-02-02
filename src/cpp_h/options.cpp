@@ -1,22 +1,14 @@
 #include "options.h"
-//#include "../FsExplorer/fshandler.h"
 #include "Kff/string.h"
 
 KTools::Options::Options() : KTools::Kff::Manager(QDir::currentPath() + "/options.kff", KTools::Kff::Manager::OpenMode::Keep)
 {
     using KTools::Converter;
     KTools::Log::assignOptionObject(this);
-//    FsHandler::optionsObj = this;
     if (mode == Kff::Manager::OpenMode::Clear)
     {
         addStringVariable("Path:Data", Converter::convert<QString, QByteArray>(QDir::currentPath()));
         addStringVariable("Path:Log", Converter::convert<QString, QByteArray>(QDir::currentPath()) + "/Log/");
-        addStringVariable("FSExplorer:LastPath", "C:/");
-        addInt8Variable("ImageStorage:Quality:Webp", 97);
-        addInt8Variable("ImageStorage:Quality:Jpg", 97);
-        addInt8Variable("ImageStorage:Quality:Png", 100);
-        addInt8Variable("ImageStorage:Quality:Gif", 100);
-        addInt8Variable("ImageStorage:Quality:Tiff", 100);
     }
 }
 
