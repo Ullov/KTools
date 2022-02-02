@@ -17,5 +17,7 @@
         <file>resources/icons/favicon(exhentai).ico</file>
         <file>resources/icons/favicon(nhentai).ico</file>
         <file>resources/other/cacert.pem</file>
+        <file>qml/QmlIncludes/InputCheckbox.qml</file>
+        <file>qml/QmlIncludes/Text.qml</file>
     </qresource>
 </RCC>
