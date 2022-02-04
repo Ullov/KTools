@@ -1,8 +1,9 @@
 import QtQuick 2.0
 
 TextEdit {
+    id: root
     text: "Sample"
-    width: 500
+    width: root.contentWidth
 
     readOnly: true
     selectByMouse: true

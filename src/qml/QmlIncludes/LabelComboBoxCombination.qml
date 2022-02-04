@@ -16,10 +16,12 @@ Rectangle {
         anchors.verticalCenter: parent.verticalCenter
         text: "Sample text"
         font.pixelSize: fontSize
+        width: contentWidth
     }
     ComboBox {
         id: box
         y: 0
+        anchors.left: name.right
         anchors.right: parent.right
         anchors.verticalCenter: parent.verticalCenter
         width: 140
