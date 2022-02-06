@@ -245,6 +245,38 @@ const QString& KTools::Curl::getPostParam()
     return *handlesList->at(numb)->postParam;
 }
 
+void KTools::Curl::setDebugFile(const QByteArray &path)
+{
+    handlesList->at(numb)->debugPath = path.toStdString();
+    curl_easy_setopt(handlesList->at(numb)->handle, CURLOPT_DEBUGFUNCTION, debugCallback);
+    curlEasySetopt(CURLOPT_DEBUGDATA, handlesList->at(numb)->debugPath);
+    curlEasySetopt(CURLOPT_VERBOSE, 1L);
+}
+
+int KTools::Curl::debugCallback(CURL *handle, curl_infotype type, char *data, quint64 size, const char *userptr)
+{
+    QByteArray normData;
+    normData += QByteArray(data, size);
+    if (type == CURLINFO_TEXT)
+        KTools::File::writeFile(normData, userptr, "text.txt", QIODevice::Append);
+    else if (type == CURLINFO_HEADER_IN)
+        KTools::File::writeFile(normData, userptr, "headerIn.txt", QIODevice::Append);
+    else if (type == CURLINFO_HEADER_OUT)
+        KTools::File::writeFile(normData, userptr, "headerOut.txt", QIODevice::Append);
+    else if (type == CURLINFO_DATA_IN)
+        KTools::File::writeFile(normData, userptr, "dataIn.txt", QIODevice::Append);
+    else if (type == CURLINFO_DATA_OUT)
+        KTools::File::writeFile(normData, userptr, "dataOut.txt", QIODevice::Append);
+    else if (type == CURLINFO_SSL_DATA_IN)
+        KTools::File::writeFile(normData, userptr, "sslDataIn.txt", QIODevice::Append);
+    else if (type == CURLINFO_SSL_DATA_OUT)
+        KTools::File::writeFile(normData, userptr, "sslDataOut.txt", QIODevice::Append);
+    else if (type == CURLINFO_END)
+        KTools::File::writeFile(normData, userptr, "end.txt", QIODevice::Append);
+
+    return 0;
+}
+
 void KTools::Curl::curlEasySetopt(const CURLoption &option, std::string &parameter)
 {
     if (curl_easy_setopt(handlesList->at(numb)->handle, option, parameter.c_str()) != CURLE_OK)

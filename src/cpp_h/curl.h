@@ -80,6 +80,7 @@ namespace KTools
             long responseCode; // response code for last request
             bool emitProgress = false;
             bool autoRefer = true;
+            std::string debugPath;
         };
         struct RequestTypesStrings
         {
@@ -108,6 +109,7 @@ namespace KTools
         void setRequestType(RequestType requType);
         void setErrFile(const QString &path, const QString &fileName);
         void unsetErrFile();
+        void setDebugFile(const QByteArray &path);
 
         const QString& getPostParam();
 
@@ -119,6 +121,7 @@ namespace KTools
     private:
         static quint64 writeMemoryCallback(char *data, quint64 size, quint64 nmemb, QByteArray *writerData);
         static quint64 headerCallback(char *buffer, quint64 size, quint64 nitems, QByteArray *userdata);
+        static int debugCallback(CURL *handle, curl_infotype type, char *data, quint64 size, const char *userptr);
         void generateHeader();
 
         void curlEasySetopt(const CURLoption &option, std::string &parameter);
