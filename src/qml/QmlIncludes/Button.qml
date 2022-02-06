@@ -3,39 +3,31 @@ import QtQuick.Controls 2.2
 
 Rectangle {
     id:root
-    property string labelText: "Sample text"
+    property alias text: buttonLabel.text
+    property alias textColor: buttonLabel.color
+    property alias textWeight: buttonLabel.font.weight
+    property alias textSize: buttonLabel.font.pixelSize
+
     property string onPressedColor: "Black"
     property string onHoveredColor: "Gray"
-    property string standartColor: "#dadada"
-    property string borderColorC: "Black"
     property string onPressedBorderColor: "Black"
     property string onHoveredBorderColor: "Black"
     property real onPressedOpacity: 1
     property real onHoveredOpacity: 1
-    property string labelTextColor: "Black"
-    //property string onPressedLabelTextColor: "Black"
-    //property string onHoveredLabelTextColor: "Black"
-    property int borderWidthC: 1
-    property int borderRadiusC: 5
-    property int heightC: 40
-    property int widthC: 100
-    property int labelTextWeight: Font.Normal
-    property int pixelSize: 12
     property alias mouseArea: mouseAreaItem
-    //id: buttonRectangle
-    implicitWidth: widthC
-    implicitHeight: heightC
-    border.color: borderColorC
-    border.width: borderWidthC
-    radius: borderRadiusC
-    color: standartColor
+    width: 100
+    height: 40
+    border.color: "Black"
+    border.width: 1
+    radius: 5
+    color: "#dadada"
     Text {
         id: buttonLabel
         anchors.centerIn: parent
-        text: labelText
-        color: labelTextColor
-        font.weight: labelTextWeight
-        font.pixelSize: pixelSize
+        text: "Sample text"
+        color: "Black"
+        font.weight: Font.Normal
+        font.pixelSize: 12
     }
     MouseArea {
         id: mouseAreaItem
