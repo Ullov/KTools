@@ -19,5 +19,6 @@
         <file>resources/other/cacert.pem</file>
         <file>qml/QmlIncludes/InputCheckbox.qml</file>
         <file>qml/QmlIncludes/Text.qml</file>
+        <file>qml/QmlIncludes/InputLine.qml</file>
     </qresource>
 </RCC>
