@@ -21,45 +21,6 @@ KTools::Curl::~Curl()
     delete handlesList;
 }
 
-QByteArray KTools::Curl::performing(const char* url)
-{
-    //ForProggress fp;
-
-    QByteArray buffer = "";
-    CURL *curlHandle = curl_easy_init(); // init curl session
-
-    curl_easy_setopt(curlHandle, CURLOPT_URL, url); // specifu url to get
-    curl_easy_setopt(curlHandle, CURLOPT_WRITEFUNCTION, writeMemoryCallback); // send all data to this function
-    curl_easy_setopt(curlHandle, CURLOPT_WRITEDATA, &buffer);
-    curl_easy_setopt(curlHandle, CURLOPT_HTTPHEADER, handlesList->at(numb)->slistHeader);
-    curl_easy_setopt(curlHandle, CURLOPT_CAINFO,  fullCacertPath.toStdString().c_str());
-    curl_easy_setopt(curlHandle, CURLOPT_PROXY_SSL_VERIFYHOST, 1);
-    curl_easy_setopt(curlHandle, CURLOPT_PROXY_SSL_VERIFYPEER, 1);
-    curl_easy_setopt(curlHandle, CURLOPT_ACCEPT_ENCODING, "deflate, gzip");
-    curl_easy_setopt(curlHandle, CURLOPT_FOLLOWLOCATION, 1L);
-    curl_easy_setopt(curlHandle, CURLOPT_MAXREDIRS, 5L);
-    //curl_easy_setopt(curlHandle, CURLOPT_PROGRESSFUNCTION, XFerInfoFunctionCallback);
-    //curl_easy_setopt(curlHandle, CURLOPT_PROGRESSDATA, &fp);
-    //curl_easy_setopt(curlHandle, CURLOPT_NOPROGRESS, 0L);
-
-    /*fp.th = this;
-    fp.timer = QElapsedTimer();
-    fp.timer.start();*/
-    CURLcode res = curl_easy_perform(curlHandle);
-
-    curl_easy_cleanup(curlHandle);
-    //curl_global_cleanup();
-
-    if (res != CURLE_OK)
-    {
-        return "Error in CURL";
-    }
-    else
-    {
-        return buffer;
-    }
-}
-
 quint64 KTools::Curl::writeMemoryCallback(char *data, quint64 size, quint64 nmemb, QByteArray *writerData)
 {
     if (writerData == NULL)
@@ -70,15 +31,6 @@ quint64 KTools::Curl::writeMemoryCallback(char *data, quint64 size, quint64 nmem
 
 void KTools::Curl::setHeader(QVector<QByteArray> chunk, const SetHeaderMode mode)
 {
-    /*if (mode == KEnums::CurlSettings::SetHeaderMode::New)
-        headerData = QMap<QString, QString>();
-
-    for (int i = 0; i < chunk.size(); i++)
-    {
-        QList<QByteArray> list = chunk[i].split(':');
-        headerData[list[0].trimmed()] = list[1].trimmed();
-    }
-    generateHeader();*/
     curl_slist_free_all(handlesList->at(numb)->slistHeader);
     handlesList->at(numb)->slistHeader = NULL;
     for (qint64 i = 0; i < chunk.size(); i++)
@@ -87,31 +39,8 @@ void KTools::Curl::setHeader(QVector<QByteArray> chunk, const SetHeaderMode mode
     }
 }
 
-/*int KTools::Curl::XFerInfoFunctionCallback(void *p, double dlTotal, double dlNow, double ulTotal, double ulNow)
-{ // all here in bytes
-    ForProggress *fp = static_cast<ForProggress*>(p);
-    if (fp->lastDlNow != dlNow || fp->lastDlTotal != dlTotal || fp->lastUlTotal != ulTotal || fp->lastUlNow != ulNow)
-    {
-        QList<double> list;
-        list.append(dlNow);
-        list.append(dlTotal);
-        list.append(ulNow);
-        list.append(ulTotal);
-        KToolsQmlInterface::curlSendProgress(list, fp->timer.elapsed(), fp->th->downloaderType);
-        fp->lastDlNow = dlNow;
-        fp->lastDlTotal = dlTotal;
-        fp->lastUlTotal = ulTotal;
-        fp->lastUlNow = ulNow;
-    }
-    return CURLE_OK;
-}*/
-
 QByteArray KTools::Curl::request(const QString &url)
 {
-    if (handlesList->at(numb)->requestMode == RequestMode::Old)
-    {
-        return performing(url.toStdString().c_str());
-    }
     QByteArray buffer;
     std::string stdPostParam = handlesList->at(numb)->postParam->toStdString();
     std::string stdUrl = url.toStdString();
@@ -125,11 +54,7 @@ QByteArray KTools::Curl::request(const QString &url)
         curlEasySetopt(CURLOPT_POSTFIELDSIZE, stdPostParam.size());
     }
 
-    /*if (handlesList->at(numb)->responseHeader->size() > 0)
-        handlesList->at(numb)->responseHeader->clear();*/
-
     handlesList->at(numb)->res = curl_easy_perform(handlesList->at(numb)->handle);
-    //curl_easy_getinfo(handlesList->at(numb)->handle, CURLINFO_RESPONSE_CODE, &handlesList->at(numb)->res);
 
     if (handlesList->at(numb)->res != CURLE_OK)
     {
@@ -158,14 +83,11 @@ void KTools::Curl::setOptions()
 {
     curl_easy_setopt(handlesList->at(numb)->handle, CURLOPT_WRITEFUNCTION, writeMemoryCallback); // send all data to this function
     curlEasySetopt(CURLOPT_CAINFO, stdFullCacertPath);
-    //curlEasySetopt(CURLOPT_PROXY_SSL_VERIFYHOST, 1);
     curlEasySetopt(CURLOPT_PROXY_SSL_VERIFYPEER, 1);
     curlEasySetopt(CURLOPT_ACCEPT_ENCODING, acceptEncoding);
     curlEasySetopt(CURLOPT_FOLLOWLOCATION, 1L);
     curlEasySetopt(CURLOPT_MAXREDIRS, 5L);
     curlEasySetopt(CURLOPT_USERAGENT, userAgent);
-    /*curl_easy_setopt(handlesList->at(numb)->handle, CURLOPT_HEADERDATA, &handlesList->at(numb)->responseHeader);
-    curl_easy_setopt(handlesList->at(numb)->handle, CURLOPT_HEADERFUNCTION, headerCallback);*/
 
     setHttpVersion(handlesList->at(numb)->httpVersion);
     setRequestType(handlesList->at(numb)->requestType);
@@ -206,7 +128,6 @@ void KTools::Curl::setHeader(const QMap<QString, QString> &chunk)
     {
         handlesList->at(numb)->requestHeader->operator[](i.key()) = i.value();
     }
-    //headerData = chunk;
     generateHeader();
 }
 

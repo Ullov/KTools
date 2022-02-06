@@ -2,10 +2,7 @@
 #define KTOOLS_CURL_H
 
 #include <curl/curl.h>
-#include <QString>
 #include <QMap>
-
-class QElapsedTimer;
 
 namespace KTools
 {
@@ -35,10 +32,6 @@ namespace KTools
             Http2,
             Standart
         };
-        enum class RequestMode {
-            Old,
-            New
-        };
     private:
         struct CurlHandle
         {
@@ -48,7 +41,6 @@ namespace KTools
                 cookieMode = CookieMode::Void;
                 headerMode = HeaderMode::Custom;
                 requestType = RequestType::Get;
-                requestMode = RequestMode::New;
                 httpVersion = HttpVersion::Http2;
                 stdErr = NULL;
                 postParam = new QString();
@@ -80,7 +72,6 @@ namespace KTools
             CookieMode cookieMode;
             HeaderMode headerMode;
             RequestType requestType;
-            RequestMode requestMode;
             HttpVersion httpVersion;
             QMap<QString, QString> *requestHeader;
             QByteArray *responseHeader;
@@ -101,7 +92,6 @@ namespace KTools
         Curl();
         ~Curl();
 
-        QByteArray performing(const char* url);
         QByteArray request(const QString &url);
         void restartSession();
 
@@ -124,13 +114,10 @@ namespace KTools
         void addHandle();
         void swichHandle(const qint32 handleNumber);
 
-        //Parsers downloaderType;
         static QString cookiePath;
 
     private:
-        //CURLcode res;
         static quint64 writeMemoryCallback(char *data, quint64 size, quint64 nmemb, QByteArray *writerData);
-        //static int XFerInfoFunctionCallback(void *p, double dlTotal, double dlNow, double ulTotal, double ulNow);
         static quint64 headerCallback(char *buffer, quint64 size, quint64 nitems, QByteArray *userdata);
         void generateHeader();
 
@@ -142,9 +129,6 @@ namespace KTools
         void curlEasySetopt(const CURLoption &option, FILE *parameter);
         void curlEasySetopt(const CURLoption &option, void *parameter);
 
-        //void curlEasyGetinfo();
-
-        //struct curl_slist *header;
         std::string voidString = "";
         std::string userAgent = "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:74.0) Gecko/20100101 Firefox/74.0";
         std::string acceptEncoding = "gzip, deflate, br";
@@ -154,16 +138,7 @@ namespace KTools
         static QString fullCacertPath;
         static QString pathToCacertInQrc;
         QVector<CurlHandle*> *handlesList;
-        qint32 numb; // number of the current hadle
-        /*struct ForProggress
-        {
-            Curl *th;
-            QElapsedTimer *timer;
-            double lastDlTotal;
-            double lastUlTotal;
-            double lastDlNow;
-            double lastUlNow;
-        };*/
+        int numb; // number of the current hadle
     };
 }
 
