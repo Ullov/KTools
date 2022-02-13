@@ -16,6 +16,7 @@ SOURCES += \
     cpp_h/Kff/fixedtypes.cpp \
     cpp_h/Kff/list.cpp \
     cpp_h/Kff/manager.cpp \
+    cpp_h/Kff/map.cpp \
     cpp_h/Kff/metainfofs.cpp \
     cpp_h/Kff/pointer.cpp \
     cpp_h/Kff/rawstream.cpp \
@@ -41,6 +42,7 @@ HEADERS += \
     cpp_h/Kff/fixedtypes.h \
     cpp_h/Kff/list.h \
     cpp_h/Kff/manager.h \
+    cpp_h/Kff/map.h \
     cpp_h/Kff/metainfofs.h \
     cpp_h/Kff/nameinfo.h \
     cpp_h/Kff/pointer.h \
