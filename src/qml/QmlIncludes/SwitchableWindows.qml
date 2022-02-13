@@ -1,6 +1,7 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.5
 import "../../js/Tools.js" as Tools
+import "qrc:/qml/QmlIncludes" as KTools
 
 Rectangle {
     id: globalRoot
@@ -35,7 +36,7 @@ Rectangle {
             onCurrentIndexChanged: comboBoxSelectionChanged()
         }
 
-        KawaiHorisontalLine {
+        KTools.HorisontalLine {
             id: leftBarDivisionLine
             anchors.left: parent.left
             anchors.right: parent.right
@@ -69,18 +70,18 @@ Rectangle {
         }
         Component {
             id: leftBarListViewDelegateItem
-            KawaiButton {
+            KTools.Button {
                 width: leftBarListView.width - 15
                 anchors.margins: 5
-                labelText: buttonText
-                borderRadiusC: 0
-                pixelSize: 15
-                heightC: 30
+                text: buttonText
+                radius: 0
+                textSize: 15
+                height: 30
                 mouseArea.acceptedButtons: Qt.LeftButton | Qt.RightButton
                 mouseArea.onClicked: {
                     if (mouse.button === Qt.RightButton)
                     {
-                        menuAction(KawaiSwitchableWindows.MenuActionMode.MenuCall, windowId)
+                        menuAction(KTools.SwitchableWindows.MenuActionMode.MenuCall, windowId)
                         contextMenu.popup()
                     }
                     else
@@ -105,11 +106,11 @@ Rectangle {
         id: contextMenu
         MenuItem {
             text: "Close"
-            onClicked: menuAction(KawaiSwitchableWindows.MenuActionMode.Close, windowIdForMenuAction)
+            onClicked: menuAction(KTools.SwitchableWindows.MenuActionMode.Close, windowIdForMenuAction)
         }
         MenuItem {
             text: "Duplicate"
-            onClicked: menuAction(KawaiSwitchableWindows.MenuActionMode.Duplicate, windowIdForMenuAction)
+            onClicked: menuAction(KTools.SwitchableWindows.MenuActionMode.Duplicate, windowIdForMenuAction)
         }
     }
 
@@ -124,7 +125,7 @@ Rectangle {
     Connections {
         target: globalRoot
         function onMenuAction(mode, windowId) {
-            if (mode === KawaiSwitchableWindows.MenuActionMode.Close)
+            if (mode === KTools.SwitchableWindows.MenuActionMode.Close)
             {
                 windowsObects[windowId][1].destroy()
                 for (var i = 0; i < leftBarListViewModelItem.count; i++)
@@ -137,11 +138,11 @@ Rectangle {
                     }
                 }
             }
-            else if (mode === KawaiSwitchableWindows.MenuActionMode.MenuCall)
+            else if (mode === KTools.SwitchableWindows.MenuActionMode.MenuCall)
             {
                 windowIdForMenuAction = windowId
             }
-            else if (mode === KawaiSwitchableWindows.MenuActionMode.Duplicate)
+            else if (mode === KTools.SwitchableWindows.MenuActionMode.Duplicate)
             {
                 var obj
                 for (var i = 0; i < leftBarListViewModelItem.count; i++)
