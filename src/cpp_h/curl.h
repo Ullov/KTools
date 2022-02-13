@@ -32,6 +32,11 @@ namespace KTools
             Http2,
             Standart
         };
+        enum class CaCertMode {
+            System,     // Gets system CA Cert file
+            CustomPath  // Gets CA Cert file defined in path
+        };
+
     private:
         struct CurlHandle
         {
@@ -42,12 +47,14 @@ namespace KTools
                 headerMode = HeaderMode::Custom;
                 requestType = RequestType::Get;
                 httpVersion = HttpVersion::Http2;
+                caCertMode = CaCertMode::CustomPath;
                 stdErr = NULL;
                 postParam = new QString();
                 cookieFileName = new QString();
                 requestHeader = new QMap<QString, QString>();
                 slistHeader = NULL;
                 responseHeader = new QByteArray();
+                caCertPath = fullCacertPath.toStdString();
             }
             ~CurlHandle()
             {
@@ -81,6 +88,9 @@ namespace KTools
             bool emitProgress = false;
             bool autoRefer = true;
             std::string debugPath;
+            bool verifyPeer = true;
+            CaCertMode caCertMode;
+            std::string caCertPath;
         };
         struct RequestTypesStrings
         {
@@ -110,6 +120,9 @@ namespace KTools
         void setErrFile(const QString &path, const QString &fileName);
         void unsetErrFile();
         void setDebugFile(const QByteArray &path);
+        void setVerifyPeer(const bool mode);
+        void setCaCertMode(const CaCertMode mode);
+        void setCaCertPath(const std::string &path);
 
         const QString& getPostParam();
 
@@ -135,7 +148,6 @@ namespace KTools
         std::string voidString = "";
         std::string userAgent = "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:74.0) Gecko/20100101 Firefox/74.0";
         std::string acceptEncoding = "gzip, deflate, br";
-        std::string stdFullCacertPath;
         static QString cacertPath;
         static QString cacertFileName;
         static QString fullCacertPath;

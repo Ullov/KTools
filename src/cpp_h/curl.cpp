@@ -7,7 +7,6 @@ KTools::Curl::Curl()
 {
     if (!KTools::File::fileExist(fullCacertPath))
         KTools::File::copyFile(pathToCacertInQrc, cacertPath, cacertFileName);
-    stdFullCacertPath = fullCacertPath.toStdString();
     handlesList = new QVector<CurlHandle*>({new CurlHandle()});
     numb = 0;
 }
@@ -82,8 +81,6 @@ quint64 KTools::Curl::headerCallback(char *buffer, quint64 size, quint64 nitems,
 void KTools::Curl::setOptions()
 {
     curl_easy_setopt(handlesList->at(numb)->handle, CURLOPT_WRITEFUNCTION, writeMemoryCallback); // send all data to this function
-    curlEasySetopt(CURLOPT_CAINFO, stdFullCacertPath);
-    curlEasySetopt(CURLOPT_PROXY_SSL_VERIFYPEER, 1);
     curlEasySetopt(CURLOPT_ACCEPT_ENCODING, acceptEncoding);
     curlEasySetopt(CURLOPT_FOLLOWLOCATION, 1L);
     curlEasySetopt(CURLOPT_MAXREDIRS, 5L);
@@ -94,6 +91,9 @@ void KTools::Curl::setOptions()
     setCookieMode(handlesList->at(numb)->cookieMode);
     setHeaderMode(handlesList->at(numb)->headerMode);
     setAutoReferer(handlesList->at(numb)->autoRefer);
+    setVerifyPeer(handlesList->at(numb)->verifyPeer);
+    setCaCertPath(handlesList->at(numb)->caCertPath);
+    setCaCertMode(handlesList->at(numb)->caCertMode);
 }
 
 void KTools::Curl::setRequestType(RequestType requType)
@@ -275,6 +275,27 @@ int KTools::Curl::debugCallback(CURL *handle, curl_infotype type, char *data, qu
         KTools::File::writeFile(normData, userptr, "end.txt", QIODevice::Append);
 
     return 0;
+}
+
+void KTools::Curl::setVerifyPeer(const bool mode)
+{
+    handlesList->at(numb)->verifyPeer = mode;
+    if (mode)
+        curlEasySetopt(CURLOPT_PROXY_SSL_VERIFYPEER, 1L);
+    else
+        curlEasySetopt(CURLOPT_PROXY_SSL_VERIFYPEER, 0L);
+}
+
+void KTools::Curl::setCaCertMode(const CaCertMode mode)
+{
+    handlesList->at(numb)->caCertMode = mode;
+    if (mode == CaCertMode::CustomPath)
+        curlEasySetopt(CURLOPT_CAINFO, handlesList->at(numb)->caCertPath);
+}
+
+void KTools::Curl::setCaCertPath(const std::string &path)
+{
+    handlesList->at(numb)->caCertPath = path;
 }
 
 void KTools::Curl::curlEasySetopt(const CURLoption &option, std::string &parameter)
