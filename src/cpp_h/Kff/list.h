@@ -9,7 +9,7 @@ namespace KTools::Kff {
     class List : private String
     {
     public:
-        List(Manager *man);
+        List(Manager *man); // Creates empty list. See String constructor if does not understand
         List(Manager *man, const qint64 pos);
         List(Pointer *poi);
         ~List();
@@ -21,6 +21,8 @@ namespace KTools::Kff {
         T& operator[](const qint64 i);
         List<T>& operator+=(const T &other);
         List<T>& operator=(const QList<T> &other);
+
+        using String::pointer;
 
     private:
         QList<T> list;
