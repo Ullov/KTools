@@ -9,6 +9,7 @@ namespace KTools::Kff {
     class String
     {
     public:
+        String(); // Creates pure RAM class
         String(Manager *man);
         String(Manager *man, const qint64 pos);
         String(const Pointer *poi);

@@ -4,6 +4,12 @@
 #include "variabletypes.h"
 #include "nameinfo.h"
 
+KTools::Kff::String::String()
+{
+    pointer = NULL;
+    data = "";
+}
+
 KTools::Kff::String::String(Manager *man)
 {
     pointer = new Pointer(man, Pointer::PointerType::VariableTypes, man->getStrings()->writeVariable(""));
@@ -45,7 +51,8 @@ void KTools::Kff::String::insert(const qint64 pos, const QByteArray content)
 
 void KTools::Kff::String::flush()
 {
-    pointer->writeData(data);
+    if (pointer != NULL)
+        pointer->writeData(data);
 }
 
 char KTools::Kff::String::at(const qint64 pos)
