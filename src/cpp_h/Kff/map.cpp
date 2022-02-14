@@ -1,5 +1,7 @@
 #include "map.h"
 #include "pointer.h"
+#include "list.h"
+#include "string.h"
 
 template <typename K, typename V>
 KTools::Kff::Map<K, V>::Map(KTools::Kff::Manager *man) : KTools::Kff::String(man)
@@ -64,4 +66,16 @@ void KTools::Kff::Map<K, V>::safeRemove(const qint64 i)
 {
     keys->safeRemove(i);
     values->safeRemove(i);
+}
+
+template <typename K, typename V>
+qint64 KTools::Kff::Map<K, V>::size()
+{
+    return keys->size();
+}
+
+template <typename K, typename V>
+qint64 KTools::Kff::Map<K, V>::findKey(const K &patt)
+{
+    return keys->find(patt);
 }
