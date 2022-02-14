@@ -17,6 +17,7 @@ namespace KTools::Kff {
         void remove(const qint64 i);
         void safeRemove(const qint64 i);
         qint64 size();
+        qint64 find(const T &patt);
 
         T& operator[](const qint64 i);
         List<T>& operator+=(const T &other);
