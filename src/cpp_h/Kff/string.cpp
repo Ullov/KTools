@@ -72,7 +72,19 @@ KTools::Kff::String& KTools::Kff::String::operator=(const QByteArray &other)
     return *this;
 }
 
+KTools::Kff::String& KTools::Kff::String::operator=(const QString &other)
+{
+    data = KTools::Converter::toByteArray<QString>(other);
+    flush();
+    return *this;
+}
+
 bool KTools::Kff::String::operator==(const QByteArray &other)
+{
+    return data == other;
+}
+
+bool KTools::Kff::String::operator==(const QString &other)
 {
     return data == other;
 }

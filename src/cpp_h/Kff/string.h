@@ -24,7 +24,9 @@ namespace KTools::Kff {
 
         const QByteRef operator[](const uint pos);
         String& operator=(const QByteArray &other);
+        String& operator=(const QString &other);
         bool operator==(const QByteArray &other);
+        bool operator==(const QString &other);
         String& operator+=(const QByteArray &other);
         Pointer *pointer;
 
