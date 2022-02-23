@@ -156,6 +156,17 @@ qint64 KTools::Kff::List<T>::find(const T &patt)
     return -1; // Element does not exist
 }
 
+template <>
+qint64 KTools::Kff::List<KTools::Kff::String>::find(const QString &patt)
+{
+    for (qint64 i = 0; i < this->size(); i++)
+    {
+        if (list[i] == patt)
+            return i;
+    }
+    return -1; // Element does not exist
+}
+
 template void KTools::Kff::List<qint8>::safeRemove(const qint64);
 template void KTools::Kff::List<qint16>::safeRemove(const qint64);
 template void KTools::Kff::List<qint32>::safeRemove(const qint64);
