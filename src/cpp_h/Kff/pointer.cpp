@@ -120,6 +120,21 @@ qint64 KTools::Kff::Pointer::getData()
 }
 
 template <>
+quint64 KTools::Kff::Pointer::getData()
+{
+    if (comparePointerType(PointerType::FixedTypes, data.at(0)))
+    {
+        FixedTypes *numbs = manager->getNumbers();
+        return numbs->get<qint64>(KTools::Converter::byteArrayToT<quint64>(data.mid(1)));
+    }
+    else
+    {
+        KLOG_ERROR("Wrong pointer type. type:" + QString(data.at(0)));
+        return 0;
+    }
+}
+
+template <>
 QByteArray KTools::Kff::Pointer::getData()
 {
     if (comparePointerType(PointerType::VariableTypes, data.at(0)))
