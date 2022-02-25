@@ -291,3 +291,4 @@ template QByteArray KTools::Converter::toByteArray<qint64>(const qint64&);
 template QByteArray KTools::Converter::toByteArray<quint64>(const quint64&);
 template QByteArray KTools::Converter::toByteArray<double>(const double&);
 template QByteArray KTools::Converter::toByteArray<bool>(const bool&);
+template QByteArray KTools::Converter::toByteArray<QString>(const QString&);
