@@ -3,6 +3,7 @@
 #include "../file.h"
 #include "../log.h"
 #include "pointer.h"
+#include "../converter.h"
 
 const qint64 KTools::Kff::RawStream::Sizes::rawData = 4080;
 
@@ -208,4 +209,22 @@ void KTools::Kff::RawStream::writeSizeVariable()
 KTools::Kff::Pointer KTools::Kff::RawStream::getPointer()
 {
     return Pointer(manager, Pointer::PointerType::File, clusters.first());
+}
+
+KTools::Kff::RawStream& KTools::Kff::RawStream::operator<<(const QByteArray &content)
+{
+    this->write(content);
+    return *this;
+}
+
+KTools::Kff::RawStream& KTools::Kff::RawStream::operator<<(const QString &content)
+{
+    this->write(KTools::Converter::toByteArray<QString>(content));
+    return *this;
+}
+
+KTools::Kff::RawStream& KTools::Kff::RawStream::operator<<(const Pointer &content)
+{
+    this->write(content.getAll());
+    return *this;
 }

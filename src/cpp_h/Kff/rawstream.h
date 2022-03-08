@@ -27,6 +27,10 @@ namespace KTools::Kff {
         void resize(const qint64 nsize);
         Pointer getPointer();
 
+        RawStream& operator<<(const QByteArray &content);
+        RawStream& operator<<(const QString &content);
+        RawStream& operator<<(const Pointer &content);
+
     protected:
         Manager *manager;
         qint64 dataOffset = 8;
