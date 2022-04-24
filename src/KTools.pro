@@ -12,16 +12,6 @@ CONFIG += c++17 object_parallel_to_source
 SOURCES += \
     cpp_h/HtmlAstMaker/object.cpp \
     cpp_h/HtmlAstMaker/tag.cpp \
-    cpp_h/Kff/file.cpp \
-    cpp_h/Kff/fixedtypes.cpp \
-    cpp_h/Kff/list.cpp \
-    cpp_h/Kff/manager.cpp \
-    cpp_h/Kff/map.cpp \
-    cpp_h/Kff/metainfofs.cpp \
-    cpp_h/Kff/pointer.cpp \
-    cpp_h/Kff/rawstream.cpp \
-    cpp_h/Kff/string.cpp \
-    cpp_h/Kff/variabletypes.cpp \
     cpp_h/StaticVarsDeclarations.cpp \
     cpp_h/archiverw.cpp \
     cpp_h/converter.cpp \
@@ -38,17 +28,6 @@ HEADERS += \
     KTools_global.h \
     cpp_h/HtmlAstMaker/object.h \
     cpp_h/HtmlAstMaker/tag.h \
-    cpp_h/Kff/file.h \
-    cpp_h/Kff/fixedtypes.h \
-    cpp_h/Kff/list.h \
-    cpp_h/Kff/manager.h \
-    cpp_h/Kff/map.h \
-    cpp_h/Kff/metainfofs.h \
-    cpp_h/Kff/nameinfo.h \
-    cpp_h/Kff/pointer.h \
-    cpp_h/Kff/rawstream.h \
-    cpp_h/Kff/string.h \
-    cpp_h/Kff/variabletypes.h \
     cpp_h/archiverw.h \
     cpp_h/converter.h \
     cpp_h/curl.h \
@@ -62,10 +41,10 @@ HEADERS += \
     ktools.h
 
 # Default rules for deployment.
-unix {
-    target.path = /usr/lib
-}
-!isEmpty(target.path): INSTALLS += target
+#unix {
+#    target.path = /usr/lib
+#}
+#!isEmpty(target.path): INSTALLS += target
 
-unix:!macx: LIBS += -lKF5Archive
+#unix:!macx: LIBS += -lKF5Archive
 LIBS += -lcurl

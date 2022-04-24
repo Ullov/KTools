@@ -4,8 +4,9 @@
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QJsonDocument>
+#include <QIODevice>
 #include "exforstring.h"
-#include <QTextCodec>
+//#include <QTextCodec>
 
 KTools::Converter::Converter() {}
 
@@ -178,7 +179,7 @@ QByteArray KTools::Converter::toByteArray(const T &data)
 
 QString KTools::Converter::numberToUtf8(const quint16 &code)
 {
-    QString resultChar = QString::fromUtf16(&code);
+    QString resultChar = QString(char16_t(code));
     resultChar.resize(1);
     return resultChar;
 }
@@ -189,7 +190,7 @@ void KTools::Converter::percentEncodingToString(QString &encodedString)
     for (int i = 0; i < encodedString.size();)
     {
         QChar currChar = encodedString[i];
-        if (currChar == "%")
+        if (currChar == '%')
         {
             QString code = encodedString.mid(i + 1, 2);
             QString repl = QString((char)code.toInt(&forWhat, 16));
@@ -211,7 +212,7 @@ void KTools::Converter::percentEncodingToString(QByteArray &encodedString)
     for (int i = 0; i < str.size();)
     {
         QChar currChar = str[i];
-        if (currChar == "%")
+        if (currChar == '%')
         {
             QString code = str.mid(i + 1, 2);
             QString repl = QString((char)code.toInt(&forWhat, 16));
@@ -264,11 +265,11 @@ void KTools::Converter::convertHtmlHexCodes(QString &data)
     convertHtmlEntities(data);
 }
 
-QString KTools::Converter::nationalEncodingToUtf8(const QByteArray &inputEncoding, const QByteArray &data)
+/*QString KTools::Converter::nationalEncodingToUtf8(const QByteArray &inputEncoding, const QByteArray &data)
 {
     QTextCodec *codec = QTextCodec::codecForName(inputEncoding);
     return codec->toUnicode(data);
-}
+}*/
 
 template qint8 KTools::Converter::byteArrayToT<qint8>(const QByteArray&);
 template quint8 KTools::Converter::byteArrayToT<quint8>(const QByteArray&);

@@ -20,14 +20,14 @@ namespace KTools
         template<typename T>
         static QByteArray toByteArray(const T &data);
 
-        static QString numberToUtf8(const quint16 &code);
+        static QString numberToUtf8(const quint16 &code); // Converts number in char with same code as number
         static void percentEncodingToString(QString &encodedString);
         static void percentEncodingToString(QByteArray &encodedString);
         static void toNtfsCompatibleString(QString &data);
         static void convertHtmlEntities(QString &inp);
         static void convertHtmlEntities(QByteArray &inp);
         static void convertHtmlHexCodes(QString &data);
-        static QString nationalEncodingToUtf8(const QByteArray &inputEncoding, const QByteArray &data);
+        //static QString nationalEncodingToUtf8(const QByteArray &inputEncoding, const QByteArray &data);
     };
 }
 

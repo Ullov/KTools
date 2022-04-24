@@ -187,7 +187,7 @@ void KTools::Curl::setHttpVersion(const HttpVersion vers)
 void KTools::Curl::setCookieMode(const CookieMode mode)
 {
     handlesList->at(numb)->cookieMode = mode;
-    std::string stdPathToCookie = (cookiePath + handlesList->at(numb)->cookieFileName).toStdString();
+    std::string stdPathToCookie = (cookiePath + *handlesList->at(numb)->cookieFileName).toStdString();
     if (handlesList->at(numb)->cookieMode == CookieMode::GetAndKeep) // Get cookie in first request and use it in next requests
     {
         curlEasySetopt(CURLOPT_COOKIEJAR, stdPathToCookie);

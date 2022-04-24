@@ -22,15 +22,15 @@ KTools::HtmlAst::Tag& KTools::HtmlAst::Object::readTag(qint32 &pos, const qint32
         if (htmlText->mid(pos, 2) == "<!")
         {
             ++pos;
-            while (htmlText->at(pos) != "<")
+            while (htmlText->at(pos) != '<')
                 ++pos;
         }
-        else if (htmlText->at(pos) == "<")
+        else if (htmlText->at(pos) == '<')
         {
             bool tagNameReaded = false;
             bool tagClosed = false;
             ++pos; // skip < char
-            if (htmlText->at(pos) == "/")
+            if (htmlText->at(pos) == '/')
             {
                 tagClass->status = Tag::StatusEnum::TagClosingDetected;
                 return *tagClass;
@@ -39,21 +39,21 @@ KTools::HtmlAst::Tag& KTools::HtmlAst::Object::readTag(qint32 &pos, const qint32
             {
                 if (!tagClosed)
                 {
-                    if (htmlText->at(pos) == ">")
+                    if (htmlText->at(pos) == '>')
                     {
                         tagClosed = true; // tag end detected
                         ++pos;
                     }
-                    else if (htmlText->at(pos).isSpace() || htmlText->at(pos) == "/")
+                    else if (htmlText->at(pos).isSpace() || htmlText->at(pos) == '/')
                     {
                         ++pos; // skip space char after < char
                     }
-                    else if ((htmlText->at(pos).isLetter() || htmlText->at(pos) == "-") && !tagNameReaded)
+                    else if ((htmlText->at(pos).isLetter() || htmlText->at(pos) == '-') && !tagNameReaded)
                     {
                         readTagName(pos, *tagClass);
                         tagNameReaded = true;
                     }
-                    else if ((htmlText->at(pos).isLetter() || htmlText->at(pos) == "-") && tagNameReaded)
+                    else if ((htmlText->at(pos).isLetter() || htmlText->at(pos) == '-') && tagNameReaded)
                     {
                         readTagAttributes(pos, *tagClass);
                         tagClosed = true;
@@ -116,7 +116,7 @@ KTools::HtmlAst::Tag& KTools::HtmlAst::Object::readTag(qint32 &pos, const qint32
 bool KTools::HtmlAst::Object::readTagName(qint32 &pos, Tag &tagClass)
 {
     qint32 start = pos;
-    while (htmlText->at(pos).isLetter() || htmlText->at(pos) == "-" || htmlText->at(pos).isDigit())
+    while (htmlText->at(pos).isLetter() || htmlText->at(pos) == '-' || htmlText->at(pos).isDigit())
     {
         ++pos;
     }
@@ -126,16 +126,16 @@ bool KTools::HtmlAst::Object::readTagName(qint32 &pos, Tag &tagClass)
 
 bool KTools::HtmlAst::Object::readTagAttributes(qint32 &pos, Tag &tagClass)
 {
-    while (htmlText->at(pos) != ">" || htmlText->mid(pos, 2) == "/>") // while tag not closed
+    while (htmlText->at(pos) != '>' || htmlText->mid(pos, 2) == "/>") // while tag not closed
     {
         qint32 startKey = pos;
-        while ((htmlText->at(pos).isLetter() || htmlText->at(pos) == "-" || htmlText->at(pos) == ":") && htmlText->at(pos) != "=")
+        while ((htmlText->at(pos).isLetter() || htmlText->at(pos) == '-' || htmlText->at(pos) == ':') && htmlText->at(pos) != '=')
         {
             ++pos;
         }
         qint32 lenKey = pos - startKey; // key lenght
         QChar quiote = htmlText->at(pos + 1);
-        if (htmlText->at(pos) == "=" && (quiote == "\"" || quiote == "'"))
+        if (htmlText->at(pos) == '=' && (quiote == '"' || quiote == '\''))
         {
             pos += 2;
             qint32 startValue = pos;
@@ -150,7 +150,7 @@ bool KTools::HtmlAst::Object::readTagAttributes(qint32 &pos, Tag &tagClass)
             return false; // here should be error handling
         }
         ++pos; // skip " char
-        while (htmlText->at(pos) == " " || htmlText->at(pos) == "\n" || htmlText->at(pos) == "\r" || htmlText->at(pos) == "\t") // skip spaces between attributes
+        while (htmlText->at(pos) == ' ' || htmlText->at(pos) == '\n' || htmlText->at(pos) == '\r' || htmlText->at(pos) == '\t') // skip spaces between attributes
             ++pos;
     }
     ++pos;
@@ -288,7 +288,7 @@ KTools::HtmlAst::Object::JsReadStatus KTools::HtmlAst::Object::readJs(const QStr
                 startPos = i;
             }
         }
-        else if (inner[i] == "]")
+        else if (inner[i] == ']')
         {
             --bracesCount;
             if (bracesCount == 0 && inArray)
@@ -305,7 +305,7 @@ KTools::HtmlAst::Object::JsReadStatus KTools::HtmlAst::Object::readJs(const QStr
                 inArray = false;
             }
         }
-        else if (inner[i] == "}")
+        else if (inner[i] == '}')
         {
             --bracesCount;
             if (bracesCount == 0 && inObject)
