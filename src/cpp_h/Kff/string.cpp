@@ -4,28 +4,25 @@
 #include "variabletypes.h"
 #include "nameinfo.h"
 
-KTools::Kff::String::String()
-{
-    pointer = NULL;
-    data = "";
-}
-
 KTools::Kff::String::String(Manager *man)
 {
     pointer = new Pointer(man, Pointer::PointerType::VariableTypes, man->getStrings()->writeVariable(""));
     data = "";
+    flush();
 }
 
 KTools::Kff::String::String(Manager *man, const qint64 pos)
 {
     pointer = new Pointer(man, Pointer::PointerType::VariableTypes, pos);
     data = pointer->getData<QByteArray>();
+    flush();
 }
 
 KTools::Kff::String::String(const Pointer *poi)
 {
     pointer = new Pointer(*poi);
     data = pointer->getData<QByteArray>();
+    flush();
 }
 
 KTools::Kff::String::~String()
@@ -57,12 +54,15 @@ void KTools::Kff::String::flush()
 
 char KTools::Kff::String::at(const qint64 pos)
 {
-    return data.at(pos);
+    if (pos > data.size() - 1)
+        return '\0';
+    else
+        return data.at(pos);
 }
 
-const QByteRef KTools::Kff::String::operator[](const uint pos)
+char KTools::Kff::String::operator[](const uint pos)
 {
-    return data[pos];
+    return this->at(pos);
 }
 
 KTools::Kff::String& KTools::Kff::String::operator=(const QByteArray &other)
@@ -99,4 +99,9 @@ KTools::Kff::String& KTools::Kff::String::operator+=(const QByteArray &other)
 void KTools::Kff::String::deleteVariable()
 {
     pointer->deleteData();
+}
+
+qint64 KTools::Kff::String::size()
+{
+    return data.size();
 }

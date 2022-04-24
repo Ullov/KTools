@@ -143,6 +143,7 @@ QByteArray KTools::Kff::RawStream::read(qint64 len)
     }
     for (int i = 0; readed < len; i++)
     {
+        qint64 readedBefore = readed;
         file->seek(clusters[clsNumber] + 16 + localPos);
         if ((len - readed) > (Sizes::rawData - localPos))
             result.append(file->read<QByteArray>(Sizes::rawData - localPos));
@@ -151,6 +152,8 @@ QByteArray KTools::Kff::RawStream::read(qint64 len)
         localPos = 0;
         clsNumber++;
         readed = result.size();
+        if (readed == readedBefore) // Crude fix for void strings
+            break;
     }
 
     return result;

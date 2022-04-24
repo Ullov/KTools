@@ -9,7 +9,6 @@ namespace KTools::Kff {
     class String
     {
     public:
-        String(); // Creates pure RAM class
         String(Manager *man);
         String(Manager *man, const qint64 pos);
         String(const Pointer *poi);
@@ -20,20 +19,23 @@ namespace KTools::Kff {
         void insert(const qint64 pos, const QByteArray content);
         char at(const qint64 pos);
         void deleteVariable();
+        qint64 size();
 
 
-        const QByteRef operator[](const uint pos);
+        char operator[](const uint pos);
         String& operator=(const QByteArray &other);
         String& operator=(const QString &other);
         bool operator==(const QByteArray &other);
         bool operator==(const QString &other);
         String& operator+=(const QByteArray &other);
-        Pointer *pointer;
 
 
     protected:
         void flush();
+        String *string = this;
+        //Pointer *pointer;
 
+    private:
         QByteArray data;
     };
 }

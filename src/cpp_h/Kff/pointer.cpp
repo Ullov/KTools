@@ -7,11 +7,11 @@
 #include "variabletypes.h"
 #include "list.h"
 
-KTools::Kff::Pointer::Pointer()
+/*KTools::Kff::Pointer::Pointer()
 {
     isNull = true;
     data.fill('\0', 9);
-}
+}*/
 
 KTools::Kff::Pointer::Pointer(Manager *man, const QByteArray &content)
 {

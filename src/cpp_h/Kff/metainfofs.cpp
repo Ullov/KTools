@@ -4,12 +4,12 @@
 #include "list.h"
 #include <QImage>
 
-KTools::Kff::MetainfoFs::MetainfoFs(KTools::Options *opts) : KTools::Kff::Manager(opts->getParam<QByteArray>("Path:Data") + "/iamgeStorage.kff", KTools::Kff::Manager::OpenMode::Keep)
+KTools::Kff::MetainfoFs::MetainfoFs(KTools::Options *opts) : KTools::Kff::Manager("imgeStorage.kff", KTools::Kff::Manager::OpenMode::Keep)
 {
     options = opts;
     if (mode == KTools::Kff::Manager::OpenMode::Clear)
     {
-        KTools::Kff::Pointer pointer(this, Pointer::PointerType::VariableTypes, strs->writeVariable("")); // Attribute names
+        /*KTools::Kff::Pointer pointer(this, Pointer::PointerType::VariableTypes, strs->writeVariable("")); // Attribute names
         defaultStream->seek(0);
         defaultStream->write(pointer.getAll());
 
@@ -19,7 +19,19 @@ KTools::Kff::MetainfoFs::MetainfoFs(KTools::Options *opts) : KTools::Kff::Manage
 
         pointer.setPos(strs->writeVariable("")); // Pointers to images
         defaultStream->seek(18);
-        defaultStream->write(pointer.getAll());
+        defaultStream->write(pointer.getAll());*/
+        Pointer pointer(this, String(this).pointer->getAll());
+        List<Pointer> LPoi(this);
+        LPoi += pointer;
+        pointer.setAll(String(this).pointer->getAll());
+        LPoi += pointer;
+        pointer.setAll(String(this).pointer->getAll());
+        LPoi += pointer;
+        // 1 - Attirbute names
+        // 2 - Tag names
+        // 3 - Pointers to images
+        defaultStream->seek(0);
+        defaultStream->operator<<(*LPoi.pointer);
     }
 }
 

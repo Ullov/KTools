@@ -15,7 +15,7 @@ namespace KTools::Kff {
             File = 3
         };
 
-        Pointer();
+        //Pointer();
         Pointer(Manager *man, const QByteArray &content);
         Pointer(Manager *man, const PointerType type, const qint64 position);
 

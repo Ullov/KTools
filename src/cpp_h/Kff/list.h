@@ -17,17 +17,17 @@ namespace KTools::Kff {
         void remove(const qint64 i);
         void safeRemove(const qint64 i);
         qint64 size();
-        qint64 find(const T &patt);
-        qint64 find(const QString &patt);
+
+        template <typename F>
+        qint64 find(const F &patt);
 
         T& operator[](const qint64 i);
         List<T>& operator+=(const T &other);
         List<T>& operator=(const QList<T> &other);
 
-        using String::pointer;
-
     private:
         QList<T> list;
+        String *parent;
     };
 }
 

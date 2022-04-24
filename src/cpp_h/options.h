@@ -6,6 +6,7 @@
 #include "Kff/manager.h"
 #include "Kff/fixedtypes.h"
 #include "Kff/variabletypes.h"
+#include "Kff/map.h"
 
 namespace KTools
 {
@@ -13,31 +14,25 @@ namespace KTools
     {
     public:
         Options();
-        enum class ParamType : qint8 {
-            Int8 = 1,
-            Int16 = 2,
-            Int32 = 3,
-            Int64 = 4,
-            UInt8 = 5,
-            UInt16 = 6,
-            UInt32 = 7,
-            UInt64 = 8,
-            Float = 9,
-            Bool = 10,
-            String = 11,
-            List = 12
-        };
 
-        void updateParam(const QByteArray &name, const QByteArray &value, const ParamType type);
-        template <typename T>
-        T getParam(const QByteArray &name);
+        void updateParam(const QByteArray &name, const QByteArray &value);
+
+        QByteArray getStringParam(const QByteArray &name);
+        qint64 getInt64Param(const QByteArray &name);
+        quint64 getUInt64Param(const QByteArray &name);
+
+        using KTools::Kff::Manager::mode;
+
+        void addVariable(const QByteArray &name, const QByteArray &data); // String
+        void addVariable(const QByteArray &name, const qint64 data); // int64
+        void addVariable(const QByteArray &name, const quint64 data); // uint64
 
     private:
-        void addInt8Variable(const QByteArray &name, const qint8 data);
-        void addStringVariable(const QByteArray &name, const QByteArray &data);
-        void addInt16Variable(const QByteArray &name, const qint16 data);
-        void addInt32Variable(const QByteArray &name, const qint32 data);
-        void addInt64Variable(const QByteArray &name, const qint64 data);
+        Kff::Map<Kff::String, Kff::String> *valuesString;
+        Kff::Map<Kff::String, Kff::Pointer> *valuesInt64;
+        Kff::Map<Kff::String, Kff::Pointer> *valuesUInt64;
+
+        Manager* manager = this;
     };
 }
 
