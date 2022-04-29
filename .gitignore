@@ -1,4 +1,3 @@
 build*
 src/KTools.pro.*
-
-CmakeLists.txt.*
+src/CmakeLists.txt.*
