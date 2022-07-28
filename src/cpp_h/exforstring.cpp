@@ -1,6 +1,7 @@
 #include "exforstring.h"
 
-#include <string>
+#include <iostream>
+#include <algorithm>
 #include <QString>
 #include <QVector>
 #include <QRegularExpression>
@@ -110,4 +111,60 @@ QVector<double> KTools::ExForString::getDoubleNumberFromString(const QString &st
     QVector<double> result;
     executeRegex(str, "(\\d+[.,]\\d+|\\d+)", result);
     return result;
+}
+
+template<>
+void KTools::ExForString::varDump(const std::string &value, const int tabs)
+{
+    std::string preLine;
+    preLine.append(tabs, '\t');
+    std::string tmp = '"' + value + '"';
+    rmChar(tmp, '\r');
+    std::cout << preLine << "std::string (" << value.size() << ')' << std::endl;
+    std::cout << preLine << tmp << std::endl;
+}
+
+template<>
+void KTools::ExForString::varDump(const std::vector<std::string> &value, const int tabs)
+{
+    std::string preLine;
+    preLine.append(tabs, '\t');
+    std::cout << preLine << "std::vector (" << value.size() << ')' << std::endl << preLine << "{" << std::endl;
+    for (int i = 0; i < value.size(); i++)
+    {
+        varDump<std::string>(value[i], tabs + 1);
+    }
+    std::cout << preLine << "}" << std::endl;
+}
+
+template<>
+void KTools::ExForString::varDump(const std::pair<std::string, std::string> &value, const int tabs)
+{
+    std::string preLine;
+    preLine.append(tabs, '\t');
+    std::pair copy = value;
+    rmChar(copy.first, '\r');
+    rmChar(copy.second, '\r');
+    std::cout << preLine << "[\"" << copy.first << "\"] => \"" << copy.second << "\"" << std::endl;
+}
+
+template<>
+void KTools::ExForString::varDump(const std::map<std::string, std::string> &value, const int tabs)
+{
+    std::string preLine;
+    preLine.append(tabs, '\t');
+    std::cout << preLine << "std::map (" << value.size() << ')' << std::endl << preLine << "{" << std::endl;
+
+    std::map<std::string, std::string>::const_iterator i;
+    for (i = value.begin(); i != value.end(); i++)
+    {
+        std::pair<std::string, std::string> subVal({i->first, i->second});
+        varDump<std::pair<std::string, std::string>>(subVal, tabs + 1);
+    }
+    std::cout << preLine << "}" << std::endl;
+}
+
+void KTools::ExForString::rmChar(std::string &string, const char whatRemove)
+{
+    string.erase(std::remove(string.begin(), string.end(), whatRemove), string.end());
 }

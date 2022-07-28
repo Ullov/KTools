@@ -1,6 +1,7 @@
 #ifndef KTOOLS_EXFORSTRING_H
 #define KTOOLS_EXFORSTRING_H
 
+#include <string>
 #include <QtGlobal>
 
 namespace KTools
@@ -19,6 +20,9 @@ namespace KTools
         static void executeRegex(const QString &data, const QString &pattern, QVector<qint64> &result);
         static QVector<qint64> getIntegerNumberFromString(const QString &str);
         static QVector<double> getDoubleNumberFromString(const QString &str);
+        template <typename T>
+        static void varDump(const T &value, const int tabs = 0);
+        static void rmChar(std::string &string, const char whatRemove);
     };
 }
 
