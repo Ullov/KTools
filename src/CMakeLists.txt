@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
-project(KTools VERSION 0.1.0 LANGUAGES CXX C)
+project(KTools VERSION 0.1.1 LANGUAGES CXX C)
 
 set(CMAKE_CXX_STANDART 17)
 set(CMAKE_CXX_STANDART_REQUIRED ON)
@@ -9,6 +9,9 @@ set(MAKE_SHARED ON)
 set(FILES
     cpp_h/HtmlAstMaker/object.cpp
     cpp_h/HtmlAstMaker/tag.cpp
+    cpp_h/Network/connection.cpp
+    cpp_h/Network/requesthandler.cpp
+    cpp_h/Network/socket.cpp
     cpp_h/StaticVarsDeclarations.cpp
     cpp_h/archiverw.cpp
     cpp_h/converter.cpp
@@ -24,6 +27,9 @@ set(FILES
     KTools_global.h
     cpp_h/HtmlAstMaker/object.h
     cpp_h/HtmlAstMaker/tag.h
+    cpp_h/Network/connection.h
+    cpp_h/Network/requesthandler.h
+    cpp_h/Network/socket.h
     cpp_h/archiverw.h
     cpp_h/converter.h
     cpp_h/curl.h
