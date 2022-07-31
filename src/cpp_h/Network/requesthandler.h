@@ -30,18 +30,24 @@ namespace KTools::Network {
         void appendHeader(const std::string &name, const std::string &value);
         virtual void handler(KTools::Network::RequestHandler::Request &request) = 0;
         void setStatusCode(const int code);
+        template <typename T>
+        void write(const T &data);
+
+        std::string raw;
+
+    private:
+        Request parseHeader();
+        void preprocessor();
+        void writeHeader();
+        void writeBody();
 
         std::string responseCode = "200 OK";
         std::string httpVersion = "HTTP/1.1";
         std::map<std::string, std::string> header;
         std::string body = "";
         int descriptor = -1;
-        std::string raw;
         Socket *socket = NULL;
-
-    private:
-        Request parseHeader();
-        void preprocessor();
+        static constexpr char endLine[] = "\r\n";
     };
 }
 

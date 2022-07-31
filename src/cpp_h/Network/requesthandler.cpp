@@ -23,7 +23,12 @@ void KTools::Network::RequestHandler::preprocessor()
     {
         Request info = parseHeader();
         if (info.type != "HEAD")
+        {
             handler(info);
+            writeHeader();
+            writeBody();
+            socket->close(descriptor);
+        }
         else
             socket->close(descriptor);
     }
@@ -142,4 +147,33 @@ void KTools::Network::RequestHandler::setStatusCode(const int code)
         case 504: responseCode = "504 Gateway Timeout"; break;
         case 505: responseCode = "505 HTTP Version Not Supported"; break;
     }
+}
+
+template<>
+void KTools::Network::RequestHandler::write(const std::string &data)
+{
+    body += data;
+}
+
+void KTools::Network::RequestHandler::writeHeader()
+{
+    std::string data = httpVersion + responseCode + endLine;
+    socket->write(descriptor, data);
+    if (body.size() > 0)
+    {
+        data = "Content-Length: " + std::to_string(body.size()) + endLine;
+        socket->write(descriptor, data);
+    }
+    std::map<std::string, std::string>::const_iterator i;
+    for (i = header.begin(); i != header.end(); i++)
+    {
+        data = i->first + ": " + i->second + endLine;
+        socket->write(descriptor, data);
+    }
+    socket->write(descriptor, endLine);
+}
+
+void KTools::Network::RequestHandler::writeBody()
+{
+    socket->write(descriptor, body);
 }
