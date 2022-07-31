@@ -5,10 +5,11 @@
 
 namespace KTools::Network {
     class Socket;
+    class RequestHandler;
     class Connection
     {
     public:
-        Connection(){}
+        Connection(RequestHandler *handleClass);
         ~Connection();
 
         void listen(const int port);
@@ -16,6 +17,7 @@ namespace KTools::Network {
     private:
         SSL_CTX *createSslContext();
         Socket *sock = NULL;
+        RequestHandler *handler;
     };
 }
 

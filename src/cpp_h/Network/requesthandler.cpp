@@ -3,8 +3,9 @@
 #include <regex>
 
 #include "socket.h"
+#include "../log.h"
 
-KTools::Network::RequestHandler::RequestHandler(const int connDescriptor, Socket *sock)
+void KTools::Network::RequestHandler::set(const int connDescriptor, Socket *sock)
 {
     socket = sock;
 	descriptor = connDescriptor;
@@ -23,6 +24,8 @@ void KTools::Network::RequestHandler::preprocessor()
         Request info = parseHeader();
         if (info.type != "HEAD")
             handler(info);
+        else
+            socket->close(descriptor);
     }
 }
 
@@ -82,18 +85,6 @@ KTools::Network::RequestHandler::Request KTools::Network::RequestHandler::parseH
         while (pos != 0);
     }
     return info;
-}
-
-void KTools::Network::RequestHandler::handler(Request &request)
-{
-    std::string resp;
-    resp += "HTTP/1.1 200 OK\n";
-    resp += "Version: HTTP/1.1\n";
-    resp += "Content-Type: text/html; charset=utf-8\n";
-    resp += "Content-Length: 17\n\n";
-    resp += "<bold>Died</bold>\n";
-    socket->write(descriptor, resp);
-    socket->close(descriptor);
 }
 
 void KTools::Network::RequestHandler::start(RequestHandler *obj)

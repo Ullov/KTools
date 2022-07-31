@@ -10,10 +10,8 @@ namespace KTools::Network {
     class RequestHandler
     {
     public:
-        RequestHandler(const int connDescriptor, Socket *sock);
-        static void start(RequestHandler *obj);
+        RequestHandler(){}
 
-    private:
         struct Request
         {
             std::string type;
@@ -24,18 +22,25 @@ namespace KTools::Network {
             std::string path;
         };
 
+        static void start(RequestHandler *obj);
+        void set(const int connDescriptor, Socket *sock);
+        virtual RequestHandler* clone() = 0;
+
+    protected:
         void appendHeader(const std::string &name, const std::string &value);
-        Request parseHeader();
-        void preprocessor();
-        void handler(Request &request);
+        virtual void handler(KTools::Network::RequestHandler::Request &request) = 0;
 
         std::string responeseCode = "200";
         std::string httpVersion = "HTTP/1.1";
         std::map<std::string, std::string> header;
         std::string body = "";
-        int descriptor;
+        int descriptor = -1;
         std::string raw;
-        Socket *socket;
+        Socket *socket = NULL;
+
+    private:
+        Request parseHeader();
+        void preprocessor();
     };
 }
 

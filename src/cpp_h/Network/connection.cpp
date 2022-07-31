@@ -7,6 +7,11 @@
 
 #include "requesthandler.h"
 
+KTools::Network::Connection::Connection(RequestHandler *handleClass)
+{
+    handler = handleClass;
+}
+
 KTools::Network::Connection::~Connection()
 {
     if (sock)
@@ -27,8 +32,9 @@ void KTools::Network::Connection::listen(const int port)
     {
         sock->listen();
         int connDescriptor = sock->accept();
-        RequestHandler *handler = new RequestHandler(connDescriptor, sock);
-        std::thread tr(RequestHandler::start, std::ref(handler));
+        RequestHandler *lHandler = handler->clone();
+        lHandler->set(connDescriptor, sock);
+        std::thread tr(RequestHandler::start, std::ref(lHandler));
         tr.detach();
     }
 }
