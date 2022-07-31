@@ -12,6 +12,11 @@ namespace KTools::Network {
     public:
         RequestHandler(){}
 
+        static void start(RequestHandler *obj);
+        void set(const int connDescriptor, Socket *sock);
+        virtual RequestHandler* clone() = 0;
+
+    protected:
         struct Request
         {
             std::string type;
@@ -22,15 +27,11 @@ namespace KTools::Network {
             std::string path;
         };
 
-        static void start(RequestHandler *obj);
-        void set(const int connDescriptor, Socket *sock);
-        virtual RequestHandler* clone() = 0;
-
-    protected:
         void appendHeader(const std::string &name, const std::string &value);
         virtual void handler(KTools::Network::RequestHandler::Request &request) = 0;
+        void setStatusCode(const int code);
 
-        std::string responeseCode = "200";
+        std::string responseCode = "200 OK";
         std::string httpVersion = "HTTP/1.1";
         std::map<std::string, std::string> header;
         std::string body = "";
