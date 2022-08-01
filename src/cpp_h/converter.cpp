@@ -33,7 +33,11 @@ QByteArray KTools::Converter::byteArrayToT<QByteArray>(const QByteArray &bArr)
 {
     return bArr;
 }
-
+template<>
+std::string KTools::Converter::byteArrayToT<std::string>(const QByteArray &bArr)
+{
+    return bArr.toStdString();
+}
 
 
 template<typename QByteArray, typename E>
