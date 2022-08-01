@@ -127,9 +127,27 @@ bool KTools::File::fileExist(const QString &path)
         return false;
 }
 
+bool KTools::File::fileExist(const std::string &path)
+{
+    QFileInfo checkFile(path.c_str());
+    if (checkFile.exists() && checkFile.isFile())
+        return true;
+    else
+        return false;
+}
+
 bool KTools::File::dirExist(const QString &path)
 {
     QFileInfo checkFile(path);
+    if (checkFile.exists() && checkFile.isDir())
+        return true;
+    else
+        return false;
+}
+
+bool KTools::File::dirExist(const std::string &path)
+{
+    QFileInfo checkFile(path.c_str());
     if (checkFile.exists() && checkFile.isDir())
         return true;
     else
@@ -164,7 +182,7 @@ bool KTools::File::copyFile(const QString &oldPathToFile, const QString &newPath
 }
 
 template<typename T>
-T KTools::File::readFile(const QString &path, const QIODevice::OpenMode &flags)
+T KTools::File::readFile(const QByteArray &path, const QIODevice::OpenMode &flags)
 {
     if (!fileExist(path))
     {
@@ -179,10 +197,7 @@ T KTools::File::readFile(const QString &path, const QIODevice::OpenMode &flags)
         return T();
     }
 
-    if (typeid (T) != typeid (QByteArray))
-        return KTools::Converter::byteArrayToT<T>(rFile.readAll());
-
-    return rFile.readAll();
+    return KTools::Converter::byteArrayToT<T>(rFile.readAll());
 }
 
 bool KTools::File::isFile(const QString &path)
@@ -208,5 +223,6 @@ template qint64 KTools::File::read<qint64>();
 template quint64 KTools::File::read<quint64>();
 template qint16 KTools::File::read<qint16>();
 
-template QString KTools::File::readFile<QString>(const QString&, const QIODevice::OpenMode&);
-template QByteArray KTools::File::readFile<QByteArray>(const QString&, const QIODevice::OpenMode&);
+template QString KTools::File::readFile<QString>(const QByteArray&, const QIODevice::OpenMode&);
+template QByteArray KTools::File::readFile<QByteArray>(const QByteArray&, const QIODevice::OpenMode&);
+template std::string KTools::File::readFile<std::string>(const QByteArray&, const QIODevice::OpenMode&);
