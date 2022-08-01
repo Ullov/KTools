@@ -7,40 +7,40 @@ set(MAKE_SHARED ON)
 #set(MAKE_STATIC ON)
 
 set(FILES
-    cpp_h/HtmlAstMaker/object.cpp
-    cpp_h/HtmlAstMaker/tag.cpp
-    cpp_h/Network/connection.cpp
-    cpp_h/Network/requesthandler.cpp
-    cpp_h/Network/socket.cpp
-    cpp_h/StaticVarsDeclarations.cpp
-    cpp_h/archiverw.cpp
-    cpp_h/converter.cpp
-    cpp_h/curl.cpp
-    cpp_h/exforstring.cpp
-    cpp_h/file.cpp
-    cpp_h/fileidentifier.cpp
-    cpp_h/log.cpp
-    cpp_h/options.cpp
-    cpp_h/uuidslist.cpp
-    ktools.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/cpp_h/HtmlAstMaker/object.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/cpp_h/HtmlAstMaker/tag.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/cpp_h/Network/connection.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/cpp_h/Network/requesthandler.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/cpp_h/Network/socket.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/cpp_h/StaticVarsDeclarations.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/cpp_h/archiverw.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/cpp_h/converter.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/cpp_h/curl.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/cpp_h/exforstring.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/cpp_h/file.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/cpp_h/fileidentifier.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/cpp_h/log.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/cpp_h/options.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/cpp_h/uuidslist.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/ktools.cpp
 
-    KTools_global.h
-    cpp_h/HtmlAstMaker/object.h
-    cpp_h/HtmlAstMaker/tag.h
-    cpp_h/Network/connection.h
-    cpp_h/Network/requesthandler.h
-    cpp_h/Network/socket.h
-    cpp_h/archiverw.h
-    cpp_h/converter.h
-    cpp_h/curl.h
-    cpp_h/enums.h
-    cpp_h/exforstring.h
-    cpp_h/file.h
-    cpp_h/fileidentifier.h
-    cpp_h/log.h
-    cpp_h/options.h
-    cpp_h/uuidslist.h
-    ktools.h
+    ${CMAKE_CURRENT_LIST_DIR}/KTools_global.h
+    ${CMAKE_CURRENT_LIST_DIR}/cpp_h/HtmlAstMaker/object.h
+    ${CMAKE_CURRENT_LIST_DIR}/cpp_h/HtmlAstMaker/tag.h
+    ${CMAKE_CURRENT_LIST_DIR}/cpp_h/Network/connection.h
+    ${CMAKE_CURRENT_LIST_DIR}/cpp_h/Network/requesthandler.h
+    ${CMAKE_CURRENT_LIST_DIR}/cpp_h/Network/socket.h
+    ${CMAKE_CURRENT_LIST_DIR}/cpp_h/archiverw.h
+    ${CMAKE_CURRENT_LIST_DIR}/cpp_h/converter.h
+    ${CMAKE_CURRENT_LIST_DIR}/cpp_h/curl.h
+    ${CMAKE_CURRENT_LIST_DIR}/cpp_h/enums.h
+    ${CMAKE_CURRENT_LIST_DIR}/cpp_h/exforstring.h
+    ${CMAKE_CURRENT_LIST_DIR}/cpp_h/file.h
+    ${CMAKE_CURRENT_LIST_DIR}/cpp_h/fileidentifier.h
+    ${CMAKE_CURRENT_LIST_DIR}/cpp_h/log.h
+    ${CMAKE_CURRENT_LIST_DIR}/cpp_h/options.h
+    ${CMAKE_CURRENT_LIST_DIR}/cpp_h/uuidslist.h
+    ${CMAKE_CURRENT_LIST_DIR}/ktools.h
 )
 
 find_package(Qt6 REQUIRED COMPONENTS Core Network)
