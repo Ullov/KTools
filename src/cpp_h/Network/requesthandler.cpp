@@ -3,7 +3,8 @@
 #include <regex>
 
 #include "socket.h"
-#include "../log.h"
+#include <iostream>
+//#include "../log.h"
 
 void KTools::Network::RequestHandler::set(const int connDescriptor, Socket *sock)
 {
@@ -18,13 +19,15 @@ void KTools::Network::RequestHandler::appendHeader(const std::string &name, cons
 
 void KTools::Network::RequestHandler::preprocessor()
 {
-    raw = socket->read(descriptor);
+    if (socket)
+        raw = socket->read(descriptor);
     if (!raw.empty())
     {
         Request info = parseHeader();
         if (info.type != "HEAD")
         {
-            handler(info);
+            request = info;
+            handler();
             writeHeader();
             writeBody();
             socket->close(descriptor);
@@ -176,4 +179,9 @@ void KTools::Network::RequestHandler::writeHeader()
 void KTools::Network::RequestHandler::writeBody()
 {
     socket->write(descriptor, body);
+}
+
+void KTools::Network::RequestHandler::setRoot(const std::string path)
+{
+    root = path;
 }

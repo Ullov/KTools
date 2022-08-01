@@ -2,6 +2,7 @@
 #define KTOOLS_NETWORK_CONNECTION_H
 
 #include <openssl/ssl.h>
+#include <string>
 
 namespace KTools::Network {
     class Socket;
@@ -13,11 +14,13 @@ namespace KTools::Network {
         ~Connection();
 
         void listen(const int port);
+        void setRoot(const std::string &path);
 
     private:
         SSL_CTX *createSslContext();
         Socket *sock = NULL;
         RequestHandler *handler;
+        std::string root;
     };
 }
 

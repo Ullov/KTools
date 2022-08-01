@@ -7,6 +7,8 @@
 
 #include "requesthandler.h"
 
+#include <iostream>
+
 KTools::Network::Connection::Connection(RequestHandler *handleClass)
 {
     handler = handleClass;
@@ -32,10 +34,15 @@ void KTools::Network::Connection::listen(const int port)
     {
         sock->listen();
         int connDescriptor = sock->accept();
-        RequestHandler *lHandler = handler->clone();
-        lHandler->set(connDescriptor, sock);
-        std::thread tr(RequestHandler::start, std::ref(lHandler));
-        tr.detach();
+        if (connDescriptor > 0)
+        {
+            std::cout << connDescriptor << std::endl;
+            RequestHandler *lHandler = handler->clone();
+            lHandler->set(connDescriptor, sock);
+            lHandler->setRoot(root);
+            std::thread tr(RequestHandler::start, std::ref(lHandler));
+            tr.detach();
+        }
     }
 }
 
@@ -61,4 +68,9 @@ SSL_CTX* KTools::Network::Connection::createSslContext()
         return NULL;
     }
     return context;
+}
+
+void KTools::Network::Connection::setRoot(const std::string &path)
+{
+    root = path;
 }

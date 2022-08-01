@@ -11,9 +11,11 @@ namespace KTools::Network {
     {
     public:
         RequestHandler(){}
+        virtual ~RequestHandler(){}
 
         static void start(RequestHandler *obj);
         void set(const int connDescriptor, Socket *sock);
+        void setRoot(const std::string path);
         virtual RequestHandler* clone() = 0;
 
     protected:
@@ -28,12 +30,14 @@ namespace KTools::Network {
         };
 
         void appendHeader(const std::string &name, const std::string &value);
-        virtual void handler(KTools::Network::RequestHandler::Request &request) = 0;
+        virtual void handler() = 0;
         void setStatusCode(const int code);
         template <typename T>
         void write(const T &data);
 
-        std::string raw;
+        std::string raw = "";
+        Request request;
+        std::string root;
 
     private:
         Request parseHeader();
