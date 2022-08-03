@@ -1,12 +1,9 @@
 #include "./connection.h"
 
-#include <openssl/err.h>
-#include <thread>
-
 #include "socket.h"
-
 #include "requesthandler.h"
 
+#include <openssl/err.h>
 #include <iostream>
 
 KTools::Network::Connection::Connection(RequestHandler *handleClass)
@@ -41,7 +38,7 @@ void KTools::Network::Connection::listen(const int port)
             lHandler->set(connDescriptor, sock);
             lHandler->setRoot(root);
             std::thread tr(RequestHandler::start, std::ref(lHandler));
-            tr.detach();
+            tr.join();
         }
     }
 }
