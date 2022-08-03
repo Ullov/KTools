@@ -84,6 +84,7 @@ std::string KTools::Network::Socket::read(const int connDescriptor, const int bu
     while (::read(connDescriptor, buffer, bufferSize) > 0)
     {
         res.append(buffer, bufferSize);
+        buffer[bufferSize + 1] = 0;
         bzero(buffer, bufferSize);
     }
     delete[] buffer;
