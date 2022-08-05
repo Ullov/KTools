@@ -5,6 +5,8 @@
 #include <sys/ioctl.h>
 #include <cstring>
 
+#include "exforstring.h"
+
 KTools::Network::Socket::Socket()
 {
 	bzero(&servaddr, sizeof(servaddr));
@@ -88,6 +90,7 @@ std::string KTools::Network::Socket::read(const int connDescriptor, const int bu
         bzero(buffer, bufferSize);
     }
     delete[] buffer;
+    KTools::ExForString::rmTrailingChars(res, 0);
     return res;
 }
 
