@@ -168,3 +168,10 @@ void KTools::ExForString::rmChar(std::string &string, const char whatRemove)
 {
     string.erase(std::remove(string.begin(), string.end(), whatRemove), string.end());
 }
+
+void KTools::ExForString::rmTrailingChars(std::string &data, const char whatRemove)
+{
+    int pos = data.find_last_not_of(whatRemove) + 1;
+    if (pos != data.size())
+        data.erase(pos, std::string::npos);
+}
