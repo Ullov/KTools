@@ -1,10 +1,10 @@
 #include "./requesthandler.h"
 
 #include <regex>
+#include <iostream>
 
 #include "socket.h"
-#include <iostream>
-//#include "../log.h"
+#include "exforstring.h"
 
 void KTools::Network::RequestHandler::set(const int connDescriptor, Socket *sock)
 {
@@ -27,6 +27,7 @@ void KTools::Network::RequestHandler::preprocessor()
         if (info.type != "HEAD")
         {
             request = info;
+            parseBody();
             handler();
             writeHeader();
             writeBody();
@@ -39,7 +40,8 @@ void KTools::Network::RequestHandler::preprocessor()
 
 KTools::Network::RequestHandler::Request KTools::Network::RequestHandler::parseHeader()
 {
-    std::vector<std::string> header;
+    ExForString::rmChar(raw, '\r');
+    Request info;
     std::size_t pos = 0;
     std::size_t newPos = 0;
     std::size_t len = 0;
@@ -48,15 +50,15 @@ KTools::Network::RequestHandler::Request KTools::Network::RequestHandler::parseH
         newPos = raw.find("\n", pos);
         len = newPos - pos;
         std::string cut = raw.substr(pos, len);
-        if (cut.size() == 1)
+        if (cut.size() == 0)
             break;
-        header.push_back(cut);
+        info.header.push_back(cut);
         pos = newPos + 1;
     }
     while (pos != 0);
 
-    Request info;
-    info.header = header;
+    if (pos != 0)
+        info.body = raw.substr(pos + 1);
     std::regex reg("(^[^ ]+) ([^ ]+) ([^ ]+)");
     std::sregex_iterator begin = std::sregex_iterator(info.header[0].begin(), info.header[0].end(), reg);
     for (std::sregex_iterator i = begin; i != std::sregex_iterator(); i++)
@@ -184,4 +186,40 @@ void KTools::Network::RequestHandler::writeBody()
 void KTools::Network::RequestHandler::setRoot(const std::string path)
 {
     root = path;
+}
+
+void KTools::Network::RequestHandler::parseBody()
+{
+    if (request.body.size() == 0 || request.type != "POST")
+        return;
+    if (request.type == "POST" && request.headerMap["Content-Type"] == "application/x-www-form-urlencoded")
+    {
+        int cutStart = 0;
+        std::string name = "";
+        for (int i = 0; i < request.body.size(); i++)
+        {
+            if ((i + 1 == request.body.size()) && name != "")
+            {
+                request.parameters.insert({name, request.body.substr(cutStart)});
+                break;
+            }
+            switch (request.body[i])
+            {
+                case '=':
+                {
+                    name = request.body.substr(cutStart, i - cutStart);
+                    cutStart = i + 1;
+                    break;
+                }
+                case '&':
+                {
+                    request.parameters.insert({name, request.body.substr(cutStart, i - cutStart)});
+                    name = "";
+                    cutStart = i + 1;
+                    std::cout << request.body[i] << std::endl;
+                    break;
+                }
+            }
+        }
+    }
 }

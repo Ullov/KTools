@@ -27,6 +27,8 @@ namespace KTools::Network {
             std::map<std::string, std::string> headerMap;
             std::map<std::string, std::string> cookies;
             std::string path;
+            std::string body;
+            std::map<std::string, std::string> parameters;
         };
 
         void appendHeader(const std::string &name, const std::string &value);
@@ -44,6 +46,7 @@ namespace KTools::Network {
         void preprocessor();
         void writeHeader();
         void writeBody();
+        void parseBody();
 
         std::string responseCode = "200 OK";
         std::string httpVersion = "HTTP/1.1";
