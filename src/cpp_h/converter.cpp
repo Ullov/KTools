@@ -269,11 +269,12 @@ void KTools::Converter::convertHtmlHexCodes(QString &data)
     convertHtmlEntities(data);
 }
 
-/*QString KTools::Converter::nationalEncodingToUtf8(const QByteArray &inputEncoding, const QByteArray &data)
+std::string KTools::Converter::timeToString(const std::_Put_time<char> &time)
 {
-    QTextCodec *codec = QTextCodec::codecForName(inputEncoding);
-    return codec->toUnicode(data);
-}*/
+    std::stringstream str;
+    str << time;
+    return str.str();
+}
 
 template qint8 KTools::Converter::byteArrayToT<qint8>(const QByteArray&);
 template quint8 KTools::Converter::byteArrayToT<quint8>(const QByteArray&);

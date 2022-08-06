@@ -3,6 +3,8 @@
 
 #include <QtGlobal>
 
+#include <iomanip>
+
 class QByteArray;
 
 namespace KTools
@@ -27,6 +29,7 @@ namespace KTools
         static void convertHtmlEntities(QString &inp);
         static void convertHtmlEntities(QByteArray &inp);
         static void convertHtmlHexCodes(QString &data);
+        static std::string timeToString(const std::_Put_time<char> &time);
         //static QString nationalEncodingToUtf8(const QByteArray &inputEncoding, const QByteArray &data);
     };
 }
