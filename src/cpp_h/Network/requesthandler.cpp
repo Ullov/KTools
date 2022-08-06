@@ -52,7 +52,7 @@ KTools::Network::RequestHandler::Request KTools::Network::RequestHandler::parseH
         std::string cut = raw.substr(pos, len);
         if (cut.size() == 0)
             break;
-        info.header.push_back(cut);
+        info.header.insert(cut);
         pos = newPos + 1;
     }
     while (pos != 0);
@@ -69,15 +69,15 @@ KTools::Network::RequestHandler::Request KTools::Network::RequestHandler::parseH
     }
     info.header.erase(info.header.begin());
 
-    for (int i = 0; i < info.header.size(); i++)
+    /*for (int i = 0; i < info.header.size(); i++)
     {
         std::string &item = info.header[i];
         int pos = item.find_first_of(':');
         info.headerMap.insert({item.substr(0, pos), item.substr(pos + 2)});
-    }
-    if (info.headerMap.find("Cookie") != info.headerMap.end())
+    }*/
+    if (info.header.find("Cookie") != info.header.end())
     {
-        std::string &rawCookies = info.headerMap.find("Cookie")->second;
+        std::string &rawCookies = info.header.find("Cookie")->second;
         pos = 0;
         newPos = 0;
         len = 0;
@@ -89,7 +89,7 @@ KTools::Network::RequestHandler::Request KTools::Network::RequestHandler::parseH
             if (cut[0] == ' ')
                 cut.erase(cut.begin());
             std::size_t equPos = cut.find_first_of('=');
-            info.cookies.insert({cut.substr(0, equPos), cut.substr(equPos + 1)});
+            info.cookies.insert(cut.substr(0, equPos), cut.substr(equPos + 1));
             pos = newPos + 1;
         }
         while (pos != 0);
@@ -192,7 +192,7 @@ void KTools::Network::RequestHandler::parseBody()
 {
     if (request.body.size() == 0 || request.type != "POST")
         return;
-    if (request.type == "POST" && request.headerMap["Content-Type"] == "application/x-www-form-urlencoded")
+    if (request.type == "POST" && request.header["Content-Type"] == "application/x-www-form-urlencoded")
     {
         int cutStart = 0;
         std::string name = "";

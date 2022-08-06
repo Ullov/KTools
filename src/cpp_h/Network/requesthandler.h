@@ -5,6 +5,9 @@
 #include <map>
 #include <vector>
 
+#include "cookies.h"
+#include "header.h"
+
 namespace KTools::Network {
     class Socket;
     class RequestHandler
@@ -23,9 +26,8 @@ namespace KTools::Network {
         {
             std::string type;
             std::string version;
-            std::vector<std::string> header;
-            std::map<std::string, std::string> headerMap;
-            std::map<std::string, std::string> cookies;
+            Header header;
+            Cookies cookies;
             std::string path;
             std::string body;
             std::map<std::string, std::string> parameters;
@@ -36,6 +38,7 @@ namespace KTools::Network {
         void setStatusCode(const int code);
         template <typename T>
         void write(const T &data);
+
 
         std::string raw = "";
         Request request;
