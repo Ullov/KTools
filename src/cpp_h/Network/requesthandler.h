@@ -27,15 +27,14 @@ namespace KTools::Network {
         virtual void handler() = 0;
 
         std::string root;
+        Request *request = NULL;
+        Response *response = NULL;
 
     private:
         void preprocessor();
 
         int descriptor = -1;
         Socket *socket = NULL;
-
-        Request *request = NULL;
-        Response *response = NULL;
     };
 }
 
