@@ -13,6 +13,8 @@ namespace KTools::Network
         void setResponseCode(const int code);
         template <typename T>
         const T& getResponseCode();
+        void write(const std::string &data);
+        std::string toString();
     private:
         std::string responseCode = "200 OK";
         int numericResponseCode = 200;

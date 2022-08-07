@@ -65,3 +65,18 @@ const std::string& KTools::Network::Response::getResponseCode()
 {
     return responseCode;
 }
+
+void KTools::Network::Response::write(const std::string &data)
+{
+    body += data;
+}
+
+std::string KTools::Network::Response::toString()
+{
+    std::string result;
+    header.insert("Content-Length", std::to_string(body.size()));
+    result = header.toString();
+    result += "\r\n\r\n";
+    result += body;
+    return result;
+}
