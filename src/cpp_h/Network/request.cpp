@@ -12,6 +12,7 @@ KTools::Network::Request::Request(const std::string &rawData)
     std::size_t pos = 0;
     std::size_t newPos = 0;
     std::size_t len = 0;
+    bool isFirstLine = true;
     do
     {
         newPos = raw.find("\n", pos);
@@ -19,22 +20,33 @@ KTools::Network::Request::Request(const std::string &rawData)
         std::string cut = raw.substr(pos, len);
         if (cut.size() == 0)
             break;
-        header.insert(cut);
+        if (isFirstLine)
+        {
+            std::regex reg("(^[^ ]+) ([^ ]+) ([^ ]+)");
+            std::sregex_iterator begin = std::sregex_iterator(cut.begin(), cut.end(), reg);
+            for (std::sregex_iterator i = begin; i != std::sregex_iterator(); i++)
+            {
+                setType(i->str(1));
+                path = i->str(2);
+                setHttpVersion(i->str(3));
+            }
+            isFirstLine = false;
+        }
+        else
+        {
+            header.insert(cut);
+        }
         pos = newPos + 1;
     }
     while (pos != 0);
 
     if (pos != 0)
-        setBody(raw.substr(pos + 1));
-    std::regex reg("(^[^ ]+) ([^ ]+) ([^ ]+)");
-    std::sregex_iterator begin = std::sregex_iterator(header[0].begin(), header[0].end(), reg);
-    for (std::sregex_iterator i = begin; i != std::sregex_iterator(); i++)
     {
-        setType(i->str(1));
-        path = i->str(2);
-        setHttpVersion(i->str(3));
+        if (header["Content-Length"] == "")
+            setBody(raw.substr(pos + 1));
+        else
+            setBody(raw.substr(pos + 1, std::atoi(header["Content-Length"].c_str())));
     }
-    header.erase(header.begin());
 
     if (header.find("Cookie") != header.end())
     {
