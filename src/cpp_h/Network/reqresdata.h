@@ -19,14 +19,12 @@ namespace KTools::Network
         Header header;
 
         void setHttpVersion(const HttpVersion &version);
-        HttpVersion getHttpVersion();
+        template <typename T>
+        T getHttpVersion();
         const std::string& getBody();
     protected:
         HttpVersion httpVersion = HttpVersion::HTTP11;
         std::string body;
-
-    private:
-
     };
 }
 
