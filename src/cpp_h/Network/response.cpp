@@ -73,10 +73,9 @@ void KTools::Network::Response::write(const std::string &data)
 
 std::string KTools::Network::Response::toString()
 {
-    std::string result;
+    std::string result = getHttpVersion<std::string>() + ' ' + getResponseCode<std::string>() + "\r\n";
     header.insert("Content-Length", std::to_string(body.size()));
-    result = header.toString();
-    result += "\r\n\r\n";
+    result += header.toString();
     result += body;
     return result;
 }
