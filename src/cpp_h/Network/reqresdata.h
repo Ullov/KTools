@@ -23,9 +23,9 @@ namespace KTools::Network
         const std::string& getBody();
     protected:
         HttpVersion httpVersion = HttpVersion::HTTP11;
+        std::string body;
 
     private:
-        std::string body;
 
     };
 }
