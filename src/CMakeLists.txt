@@ -14,6 +14,9 @@ set(FILES
     ${CMAKE_CURRENT_LIST_DIR}/cpp_h/Network/socket.cpp
     ${CMAKE_CURRENT_LIST_DIR}/cpp_h/Network/cookies.cpp
     ${CMAKE_CURRENT_LIST_DIR}/cpp_h/Network/header.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/cpp_h/Network/reqresdata.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/cpp_h/Network/response.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/cpp_h/Network/request.cpp
     ${CMAKE_CURRENT_LIST_DIR}/cpp_h/StaticVarsDeclarations.cpp
     ${CMAKE_CURRENT_LIST_DIR}/cpp_h/archiverw.cpp
     ${CMAKE_CURRENT_LIST_DIR}/cpp_h/converter.cpp
@@ -34,6 +37,9 @@ set(FILES
     ${CMAKE_CURRENT_LIST_DIR}/cpp_h/Network/socket.h
     ${CMAKE_CURRENT_LIST_DIR}/cpp_h/Network/cookies.h
     ${CMAKE_CURRENT_LIST_DIR}/cpp_h/Network/header.h
+    ${CMAKE_CURRENT_LIST_DIR}/cpp_h/Network/reqresdata.h
+    ${CMAKE_CURRENT_LIST_DIR}/cpp_h/Network/response.h
+    ${CMAKE_CURRENT_LIST_DIR}/cpp_h/Network/request.cpp
     ${CMAKE_CURRENT_LIST_DIR}/cpp_h/archiverw.h
     ${CMAKE_CURRENT_LIST_DIR}/cpp_h/converter.h
     ${CMAKE_CURRENT_LIST_DIR}/cpp_h/curl.h
