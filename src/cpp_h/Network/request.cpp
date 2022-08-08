@@ -27,7 +27,7 @@ KTools::Network::Request::Request(const std::string &rawData)
             for (std::sregex_iterator i = begin; i != std::sregex_iterator(); i++)
             {
                 setType(i->str(1));
-                path = i->str(2);
+                setPath(i->str(2));
                 setHttpVersion(i->str(3));
             }
             isFirstLine = false;
@@ -101,32 +101,7 @@ void KTools::Network::Request::setBody(const std::string &data)
         return;
     if (header["Content-Type"] == "application/x-www-form-urlencoded")
     {
-        int cutStart = 0;
-        std::string name = "";
-        for (int i = 0; i < body.size(); i++)
-        {
-            if ((i + 1 == body.size()) && name != "")
-            {
-                postParams.insert({name, body.substr(cutStart)});
-                break;
-            }
-            switch (body[i])
-            {
-                case '=':
-                {
-                    name = body.substr(cutStart, i - cutStart);
-                    cutStart = i + 1;
-                    break;
-                }
-                case '&':
-                {
-                    postParams.insert({name, body.substr(cutStart, i - cutStart)});
-                    name = "";
-                    cutStart = i + 1;
-                    break;
-                }
-            }
-        }
+        postParams = urlencodedToMap(body);
     }
 }
 
@@ -143,4 +118,54 @@ void KTools::Network::Request::setHttpVersion(const std::string &value)
 const std::string& KTools::Network::Request::getPostParam(const std::string &key)
 {
     return postParams[key];
+}
+
+void KTools::Network::Request::setPath(const std::string &value)
+{
+    if (getType() == Type::GET)
+    {
+        const int pos = value.find('?');
+        if (pos != std::string::npos)
+        {
+            std::string params = value.substr(pos);
+            getParams = urlencodedToMap(params);
+            path = value.substr(0, pos);
+        }
+        else
+            path = value;
+    }
+    else
+        path = value;
+}
+
+std::map<std::string, std::string> KTools::Network::Request::urlencodedToMap(const std::string &encoded)
+{
+    int cutStart = 0;
+    std::string name = "";
+    std::map<std::string, std::string> params;
+    for (int i = 0; i < encoded.size(); i++)
+    {
+        if ((i + 1 == encoded.size()) && name != "")
+        {
+            params.insert({name, encoded.substr(cutStart)});
+            break;
+        }
+        switch (encoded[i])
+        {
+            case '=':
+            {
+                name = encoded.substr(cutStart, i - cutStart);
+                cutStart = i + 1;
+                break;
+            }
+            case '&':
+            {
+                params.insert({name, encoded.substr(cutStart, i - cutStart)});
+                name = "";
+                cutStart = i + 1;
+                break;
+            }
+        }
+    }
+    return params;
 }

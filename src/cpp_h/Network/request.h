@@ -23,7 +23,6 @@ namespace KTools::Network
 
         Cookies cookies;
 
-        void setPath(const std::string &value);
         const std::string& getPath();
         const Type& getType();
         void setHttpVersion(const std::string &value);
@@ -34,9 +33,13 @@ namespace KTools::Network
         std::string raw;
         std::string body;
         std::map<std::string, std::string> postParams;
+        std::map<std::string, std::string> getParams;
 
         void setType(const std::string &value);
         void setBody(const std::string &data);
+        void setPath(const std::string &value);
+
+        std::map<std::string, std::string> urlencodedToMap(const std::string &encoded);
 
         using ReqResData::setHttpVersion;
     };
