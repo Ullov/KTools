@@ -114,6 +114,35 @@ QVector<double> KTools::ExForString::getDoubleNumberFromString(const QString &st
 }
 
 template<>
+void KTools::ExForString::varDump(const bool &value, const int tabs)
+{
+    std::string preLine;
+    preLine.append(tabs, '\t');
+    std::string tmp;
+    if (value)
+        tmp = "\"true\"";
+    else
+        tmp = "\"false\"";
+    std::cout << preLine << "bool (" << tmp << ')' << std::endl;
+}
+
+template<>
+void KTools::ExForString::varDump(const unsigned long &value, const int tabs)
+{
+    std::string preLine;
+    preLine.append(tabs, '\t');
+    std::cout << preLine << "int (" << value << ')' << std::endl;
+}
+
+template<>
+void KTools::ExForString::varDump(const int &value, const int tabs)
+{
+    std::string preLine;
+    preLine.append(tabs, '\t');
+    std::cout << preLine << "int (" << value << ')' << std::endl;
+}
+
+template<>
 void KTools::ExForString::varDump(const std::string &value, const int tabs)
 {
     std::string preLine;
