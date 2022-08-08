@@ -139,3 +139,8 @@ void KTools::Network::Request::setHttpVersion(const std::string &value)
     else if (value == "HTTP/0.9")
         httpVersion = HttpVersion::HTTP09;
 }
+
+const std::string& KTools::Network::Request::getPostParam(const std::string &key)
+{
+    return postParams[key];
+}
