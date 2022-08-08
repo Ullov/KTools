@@ -5,6 +5,7 @@
 
 #include <openssl/err.h>
 #include <iostream>
+#include <thread>
 
 KTools::Network::Connection::Connection(RequestHandler *handleClass)
 {
@@ -33,7 +34,6 @@ void KTools::Network::Connection::listen(const int port)
         int connDescriptor = sock->accept();
         if (connDescriptor > 0)
         {
-            std::cout << connDescriptor << std::endl;
             RequestHandler *lHandler = handler->clone();
             lHandler->set(connDescriptor, sock);
             lHandler->setRoot(root);
