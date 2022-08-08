@@ -96,6 +96,7 @@ const KTools::Network::Request::Type& KTools::Network::Request::getType()
 
 void KTools::Network::Request::setBody(const std::string &data)
 {
+    body = data;
     if (body.size() == 0 || type != Type::POST)
         return;
     if (header["Content-Type"] == "application/x-www-form-urlencoded")
@@ -122,7 +123,6 @@ void KTools::Network::Request::setBody(const std::string &data)
                     postParams.insert({name, body.substr(cutStart, i - cutStart)});
                     name = "";
                     cutStart = i + 1;
-                    //std::cout << body[i] << std::endl;
                     break;
                 }
             }
