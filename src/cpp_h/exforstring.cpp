@@ -204,3 +204,24 @@ void KTools::ExForString::rmTrailingChars(std::string &data, const char whatRemo
     if (pos != data.size())
         data.erase(pos, std::string::npos);
 }
+
+void KTools::ExForString::percentEncodingToString(std::string &data)
+{
+    std::string result;
+    for (std::size_t i = 0; i < data.size(); i++)
+    {
+        char& curr = data[i];
+        if (curr == '+')
+            result += ' ';
+        else if (curr == '%')
+        {
+            std::string encoded = data.substr(i + 1, 2);
+            char converted = static_cast<char>(std::stoi(encoded, NULL, 16));
+            result += converted;
+            i += 2;
+        }
+        else
+            result += curr;
+    }
+    data = result;
+}
