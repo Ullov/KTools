@@ -127,7 +127,7 @@ void KTools::Network::Request::setPath(const std::string &value)
         const int pos = value.find('?');
         if (pos != std::string::npos)
         {
-            std::string params = value.substr(pos);
+            std::string params = value.substr(pos + 1);
             getParams = urlencodedToMap(params);
             path = value.substr(0, pos);
         }
