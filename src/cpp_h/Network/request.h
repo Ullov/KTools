@@ -27,6 +27,7 @@ namespace KTools::Network
         const Type& getType();
         void setHttpVersion(const std::string &value);
         const std::string& getPostParam(const std::string &key);
+        const std::string& getGetParam(const std::string &key);
     private:
         Type type;
         std::string path;

@@ -100,9 +100,7 @@ void KTools::Network::Request::setBody(const std::string &data)
     if (body.size() == 0 || type != Type::POST)
         return;
     if (header["Content-Type"] == "application/x-www-form-urlencoded")
-    {
         postParams = urlencodedToMap(body);
-    }
 }
 
 void KTools::Network::Request::setHttpVersion(const std::string &value)
@@ -118,6 +116,11 @@ void KTools::Network::Request::setHttpVersion(const std::string &value)
 const std::string& KTools::Network::Request::getPostParam(const std::string &key)
 {
     return postParams[key];
+}
+
+const std::string& KTools::Network::Request::getGetParam(const std::string &key)
+{
+    return getParams[key];
 }
 
 void KTools::Network::Request::setPath(const std::string &value)
@@ -147,7 +150,9 @@ std::map<std::string, std::string> KTools::Network::Request::urlencodedToMap(con
     {
         if ((i + 1 == encoded.size()) && name != "")
         {
-            params.insert({name, encoded.substr(cutStart)});
+            std::string value = encoded.substr(cutStart);
+            KTools::ExForString::percentEncodingToString(value);
+            params.insert({name, value});
             break;
         }
         switch (encoded[i])
@@ -160,7 +165,9 @@ std::map<std::string, std::string> KTools::Network::Request::urlencodedToMap(con
             }
             case '&':
             {
-                params.insert({name, encoded.substr(cutStart, i - cutStart)});
+                std::string value = encoded.substr(cutStart, i - cutStart);
+                KTools::ExForString::percentEncodingToString(value);
+                params.insert({name, value});
                 name = "";
                 cutStart = i + 1;
                 break;
