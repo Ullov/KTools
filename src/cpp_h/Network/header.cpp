@@ -6,7 +6,7 @@
 
 void KTools::Network::Header::insert(const std::string &key, const std::string &value)
 {
-    headerMap.insert({key, value});
+    headerMap.insert_or_assign(key, value);
 }
 
 void KTools::Network::Header::insert(const std::string &fullLine)
