@@ -24,9 +24,11 @@ void KTools::Network::Connection::listen(const int port)
         delete sock;
 
     sock = new Socket();
-    sock->setPort(port);
     sock->create();
-    sock->setSocketOptions();
+    sock->setInTimeout(500);
+    sock->setProtocolFamily(Socket::ProtocolFamily::Inet);
+    sock->setDomainName("0.0.0.0");
+    sock->setPort(port);
     sock->bind();
     while (1)
     {

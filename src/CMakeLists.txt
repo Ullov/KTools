@@ -1,7 +1,8 @@
 cmake_minimum_required(VERSION 3.16)
 project(KTools VERSION 0.1.1 LANGUAGES CXX C)
 
-set(CMAKE_CXX_STANDART 17)
+add_compile_definitions(KT_DEBUG)
+set(CMAKE_CXX_STANDART 23)
 set(CMAKE_CXX_STANDART_REQUIRED ON)
 set(MAKE_SHARED ON)
 #set(MAKE_STATIC ON)
@@ -17,6 +18,9 @@ set(FILES
     ${CMAKE_CURRENT_LIST_DIR}/cpp_h/Network/reqresdata.cpp
     ${CMAKE_CURRENT_LIST_DIR}/cpp_h/Network/response.cpp
     ${CMAKE_CURRENT_LIST_DIR}/cpp_h/Network/request.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/cpp_h/Network/client.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/cpp_h/Network/Ssl/bio.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/cpp_h/Network/Ssl/ssl.cpp
     ${CMAKE_CURRENT_LIST_DIR}/cpp_h/StaticVarsDeclarations.cpp
     ${CMAKE_CURRENT_LIST_DIR}/cpp_h/archiverw.cpp
     ${CMAKE_CURRENT_LIST_DIR}/cpp_h/converter.cpp
@@ -39,7 +43,10 @@ set(FILES
     ${CMAKE_CURRENT_LIST_DIR}/cpp_h/Network/header.h
     ${CMAKE_CURRENT_LIST_DIR}/cpp_h/Network/reqresdata.h
     ${CMAKE_CURRENT_LIST_DIR}/cpp_h/Network/response.h
-    ${CMAKE_CURRENT_LIST_DIR}/cpp_h/Network/request.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/cpp_h/Network/request.h
+    ${CMAKE_CURRENT_LIST_DIR}/cpp_h/Network/client.h
+    ${CMAKE_CURRENT_LIST_DIR}/cpp_h/Network/Ssl/bio.h
+    ${CMAKE_CURRENT_LIST_DIR}/cpp_h/Network/Ssl/ssl.h
     ${CMAKE_CURRENT_LIST_DIR}/cpp_h/archiverw.h
     ${CMAKE_CURRENT_LIST_DIR}/cpp_h/converter.h
     ${CMAKE_CURRENT_LIST_DIR}/cpp_h/curl.h

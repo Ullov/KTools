@@ -7,41 +7,48 @@
 
 #include "exforstring.h"
 
+#ifdef KT_DEBUG
+#include <iostream>
+#endif
+
 KTools::Network::Socket::Socket()
 {
 	bzero(&servaddr, sizeof(servaddr));
 }
 
-bool KTools::Network::Socket::create()
+KTools::Network::Socket::~Socket()
 {
-	sockfd = socket(domain, socketType, protocol);
-    if (sockfd == -1)
-    	return false;
-    else
-    	return true;
+	::close(sockfd);
 }
 
-bool KTools::Network::Socket::setSocketOptions()
+bool KTools::Network::Socket::create()
 {
-    if (setsockopt(sockfd, apiLevel, options, &opt, sizeof(opt)))
+	sockfd = socket(static_cast<int>(protocolFamily), socketType, protocol);
+    if (sockfd == -1)
+    {
+#ifdef KT_DEBUG
+        std::cout << "Failed to create socket." << std::endl;
+#endif
     	return false;
-
-    struct timeval timeout;
-    timeout.tv_sec = 0;
-    timeout.tv_usec = 500;
-    if (setsockopt(sockfd, apiLevel, SO_RCVTIMEO, &timeout, sizeof(timeout)))
-        return false;
-    
-    servaddr.sin_family = domain;
-    servaddr.sin_addr.s_addr = ip;
-    servaddr.sin_port = htons(port);
-    return true;
+    }
+    else
+    {
+        static const int opt = 1;
+        setOption(SO_REUSEADDR | SO_REUSEPORT, &opt, sizeof(opt));
+        setInTimeout(500);
+    	return true;
+    }
 }
 
 bool KTools::Network::Socket::bind()
 {
 	if (::bind(sockfd, (struct sockaddr*)&servaddr, sizeof(servaddr)) != 0)
+    {
+#ifdef KT_DEBUG
+        std::cout << "Failed to bind socket." << std::endl;
+#endif
     	return false;
+    }
     else
     	return true;
 }
@@ -67,7 +74,12 @@ int KTools::Network::Socket::accept()
 bool KTools::Network::Socket::connect()
 {
     if (::connect(sockfd, (struct sockaddr*)&servaddr, sizeof(servaddr)) != 0)
+    {
+#ifdef KT_DEBUG
+        std::cout << "Failed to connect socket." << std::endl;
+#endif
     	return false;
+    }
 	else
 		return true;
 }
@@ -77,13 +89,30 @@ int KTools::Network::Socket::close(const int connDescriptor)
     return ::close(connDescriptor);
 }
 
-std::string KTools::Network::Socket::read(const int connDescriptor, const int bufferSize)
+std::string KTools::Network::Socket::read(const int connDescriptor)
 {
     std::string res;
     char* buffer = new char[bufferSize];
     res.erase();
     bzero(buffer, bufferSize);
     while (::read(connDescriptor, buffer, bufferSize) > 0)
+    {
+        res.append(buffer, bufferSize);
+        buffer[bufferSize + 1] = 0;
+        bzero(buffer, bufferSize);
+    }
+    delete[] buffer;
+    KTools::ExForString::rmTrailingChars(res, 0);
+    return res;
+}
+
+std::string KTools::Network::Socket::read()
+{
+    std::string res;
+    char* buffer = new char[bufferSize];
+    res.erase();
+    bzero(buffer, bufferSize);
+    while (::read(sockfd, buffer, bufferSize) > 0)
     {
         res.append(buffer, bufferSize);
         buffer[bufferSize + 1] = 0;
@@ -104,24 +133,26 @@ int KTools::Network::Socket::write(const int connDescriptor, const std::string &
     return ::send(connDescriptor, buffer.c_str(), buffer.size(), 0);
 }
 
-void KTools::Network::Socket::setIp(const std::string &ipL)
+int KTools::Network::Socket::write(const char *buffer)
 {
-    ip = inet_addr(ipL.c_str());
+    return ::write(sockfd, buffer, strlen(buffer));
 }
 
-void KTools::Network::Socket::setIp(const Address ipL)
+int KTools::Network::Socket::write(const std::string &buffer)
 {
-    ip = static_cast<int>(ipL);
+    return ::write(sockfd, buffer.c_str(), buffer.size());
 }
 
 void KTools::Network::Socket::setPort(const int portL)
 {
+    servaddr.sin_port = htons(portL);
 	port = portL;
 }
 
-void KTools::Network::Socket::setDomain(const Domain domainL)
+void KTools::Network::Socket::setProtocolFamily(const ProtocolFamily protocolL)
 {
-    domain = static_cast<int>(domainL);
+    servaddr.sin_family = static_cast<int>(protocolL);
+    protocolFamily = protocolL;
 }
 
 void KTools::Network::Socket::setSocketType(const SocketType socketTypeL)
@@ -129,25 +160,43 @@ void KTools::Network::Socket::setSocketType(const SocketType socketTypeL)
     socketType = static_cast<int>(socketTypeL);
 }
 
-void KTools::Network::Socket::setSocketType(const int socketTypeL)
-{
-    socketType = socketTypeL;
-}
-
 void KTools::Network::Socket::setProtocol(const int protocolL)
 {
     protocol = protocolL;
 }
 
-void KTools::Network::Socket::setApiLevel(const int apiLevelL)
+void KTools::Network::Socket::setApiLevel(const Level apiLevelL)
 {
-    apiLevel = apiLevelL;
+    apiLevel = static_cast<int>(apiLevelL);
 }
 
-void KTools::Network::Socket::setOptions(const int optionsL)
+bool KTools::Network::Socket::setOption(const int name, const void *value, socklen_t valueSize)
 {
-    options = optionsL;
+    return setsockopt(sockfd, apiLevel, name, value, valueSize);
 }
 
+bool KTools::Network::Socket::setInTimeout(const time_t usec, const time_t sec)
+{
+    struct timeval timeout;
+    timeout.tv_sec = sec;
+    timeout.tv_usec = usec;
+    return setOption(SO_RCVTIMEO, &timeout, sizeof(timeout));
+}
 
+bool KTools::Network::Socket::setOutTimeout(const time_t usec, const time_t sec)
+{
+    struct timeval timeout;
+    timeout.tv_sec = sec;
+    timeout.tv_usec = usec;
+    return setOption(SO_SNDTIMEO, &timeout, sizeof(timeout));
+}
 
+void KTools::Network::Socket::setDomainName(const std::string &name)
+{
+    servaddr.sin_addr.s_addr = inet_addr(name.c_str());
+}
+
+void KTools::Network::Socket::setBufferSize(const int size)
+{
+    bufferSize = size;
+}

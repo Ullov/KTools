@@ -3,12 +3,13 @@
 
 #include <string>
 #include <netinet/in.h>
+#include <openssl/ssl.h>
 
 namespace KTools::Network {
     class Socket
     {
     public:
-        enum class Domain : int {
+        enum class ProtocolFamily : int {
             Unix = AF_UNIX,             // Local communication
             Local = AF_LOCAL,           // Same as Unix
             Inet = AF_INET,             // IPv4 Protocol
@@ -63,53 +64,54 @@ namespace KTools::Network {
             Udp = IPPROTO_UDP,    // UDP
             Socket = SOL_SOCKET   // Socket api
         };
-        enum class Address : int64_t {
-            All = INADDR_ANY,            // 0.0.0.0
-            Broadcast = INADDR_BROADCAST
-        };
 
         Socket();
+        ~Socket();
         
         bool create();
-        bool setSocketOptions();
         bool bind();
         bool listen(const int queueSize = 10);
         int accept();
         bool connect();
         int close(const int connDescriptor);
 
-        std::string read(const int connDescriptor, const int bufferSize = 1024);
+        std::string read(const int connDescriptor);
         int write(const int connDescriptor, const char *buffer);
         int write(const int connDescriptor, const std::string &buffer);
 
-        void setIp(const std::string &ipL);
-        void setIp(const Address ipL);
         void setPort(const int portL);
-        void setDomain(const Domain domainL);
+        void setProtocolFamily(const ProtocolFamily protocolL);
         void setSocketType(const SocketType socketTypeL);
-        void setSocketType(const int socketTypeL);
         void setProtocol(const int protocolL);
-        void setApiLevel(const int apiLevelL);
-        void setOptions(const int optionsL);
+        void setApiLevel(const Level apiLevelL);
+
+        bool setOption(const int name, const void *value, socklen_t valueSize);
+        bool setInTimeout(const time_t usec, const time_t sec = 0);
+        bool setOutTimeout(const time_t usec, const time_t sec = 0);
+        void setDomainName(const std::string &name);
+        void setBufferSize(const int size);
+
+        // METHODS ONLY FOR CLIENT MODE!!!
+        std::string read();
+        int write(const std::string &buffer);
+        int write(const char *buffer);
+
+        static SSL_CTX *sslCtx;
 
     private:
         int port = 9300;
-        //int bufferSize = 1024;
-        //std::vector<char> buffer;
-        unsigned int ip = INADDR_ANY;
-        int sockfd; // Socket decriptir
-        int connfd; // Connection descriptor
-        struct sockaddr_in servaddr; // Socket paremeters struct
-        socklen_t len; // Sores sizeof() of a servaddr variable
-        int opt = 1; // ???
-        //struct sockaddr_in cli; // ???
+        unsigned int ip = 0;
+        int sockfd;                     // Socket decriptor
+        int connfd;                     // Connection descriptor
+        struct sockaddr_in servaddr;    // Socket paremeters struct
+        socklen_t len;                  // Sores sizeof() of a servaddr variable
 
-        int domain = AF_INET;
         int socketType = SOCK_STREAM;
         int protocol = 0;
         int apiLevel = SOL_SOCKET;
-        int options = SO_REUSEADDR | SO_REUSEPORT;
         int acceptNumb = -1;
+        ProtocolFamily protocolFamily = ProtocolFamily::Inet;
+        int bufferSize = 1024;
     };
 }
 
