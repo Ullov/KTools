@@ -21,6 +21,7 @@ set(FILES
     ${CMAKE_CURRENT_LIST_DIR}/cpp_h/Network/client.cpp
     ${CMAKE_CURRENT_LIST_DIR}/cpp_h/Network/Ssl/bio.cpp
     ${CMAKE_CURRENT_LIST_DIR}/cpp_h/Network/Ssl/ssl.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/cpp_h/Network/Ssl/client.cpp
     ${CMAKE_CURRENT_LIST_DIR}/cpp_h/StaticVarsDeclarations.cpp
     ${CMAKE_CURRENT_LIST_DIR}/cpp_h/archiverw.cpp
     ${CMAKE_CURRENT_LIST_DIR}/cpp_h/converter.cpp
@@ -47,6 +48,7 @@ set(FILES
     ${CMAKE_CURRENT_LIST_DIR}/cpp_h/Network/client.h
     ${CMAKE_CURRENT_LIST_DIR}/cpp_h/Network/Ssl/bio.h
     ${CMAKE_CURRENT_LIST_DIR}/cpp_h/Network/Ssl/ssl.h
+    ${CMAKE_CURRENT_LIST_DIR}/cpp_h/Network/Ssl/client.h
     ${CMAKE_CURRENT_LIST_DIR}/cpp_h/archiverw.h
     ${CMAKE_CURRENT_LIST_DIR}/cpp_h/converter.h
     ${CMAKE_CURRENT_LIST_DIR}/cpp_h/curl.h
