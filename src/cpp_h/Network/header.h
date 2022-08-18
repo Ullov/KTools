@@ -29,6 +29,7 @@ namespace KTools::Network
         std::map<std::string, std::string>::iterator end();
         std::map<std::string, std::string>::iterator find(const std::string &key);
         void setCookie(const std::string &key, const std::string &value, const std::time_t expires = 0, const int maxAge = -1, const std::string &domain = "", const std::string &path = "/", bool secure = false, const bool httpOnly = false, const SameSite sameSite = SameSite::Lax);
+        void fromRawString(const std::string &raw);
 
     private:
         std::map<std::string, std::string> headerMap;
