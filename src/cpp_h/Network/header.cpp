@@ -106,14 +106,16 @@ void KTools::Network::Header::setCookie(const std::string &key, const std::strin
 
 void KTools::Network::Header::fromRawString(const std::string &raw)
 {
-    std::size_t endOfHeader = raw.find("\r\n\r\n") - 4;
+    std::size_t endOfHeader = raw.find("\r\n\r\n");
     if (endOfHeader == std::string::npos)
         return;
     std::size_t pos = 0;
     std::size_t lastPos = 0;
     std::string item;
-    while ((pos = raw.find("\r\n", lastPos)) != std::string::npos && pos < endOfHeader)
+    while ((pos = raw.find("\r\n", lastPos)) != std::string::npos && pos <= endOfHeader)
     {
+        /*if (lastPos == 0)
+            continue;*/
         this->insert(raw.substr(lastPos, pos - lastPos));
         lastPos = pos + 2;
     }
