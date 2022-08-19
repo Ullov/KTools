@@ -10,8 +10,6 @@ set(MAKE_SHARED ON)
 add_compile_options(-std=c++23)
 
 set(FILES
-    ${CMAKE_CURRENT_LIST_DIR}/cpp_h/HtmlAstMaker/object.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/cpp_h/HtmlAstMaker/tag.cpp
     ${CMAKE_CURRENT_LIST_DIR}/cpp_h/Network/connection.cpp
     ${CMAKE_CURRENT_LIST_DIR}/cpp_h/Network/requesthandler.cpp
     ${CMAKE_CURRENT_LIST_DIR}/cpp_h/Network/socket.cpp
@@ -37,8 +35,6 @@ set(FILES
     ${CMAKE_CURRENT_LIST_DIR}/ktools.cpp
 
     ${CMAKE_CURRENT_LIST_DIR}/KTools_global.h
-    ${CMAKE_CURRENT_LIST_DIR}/cpp_h/HtmlAstMaker/object.h
-    ${CMAKE_CURRENT_LIST_DIR}/cpp_h/HtmlAstMaker/tag.h
     ${CMAKE_CURRENT_LIST_DIR}/cpp_h/Network/connection.h
     ${CMAKE_CURRENT_LIST_DIR}/cpp_h/Network/requesthandler.h
     ${CMAKE_CURRENT_LIST_DIR}/cpp_h/Network/socket.h
