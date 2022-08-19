@@ -73,3 +73,22 @@ std::string KTools::Network::Ssl::Bio::receive()
     }
     return result;
 }
+
+bool KTools::Network::Ssl::Bio::setInTimeout(const time_t sec, const time_t usec)
+{
+    struct timeval timeout;
+    timeout.tv_sec = sec;
+    timeout.tv_usec = usec;
+    int fd = -1;
+    BIO_get_fd(bioSsl, &fd);
+    if (fd >= 0)
+    {
+        setsockopt(fd, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout));
+        return true;
+    }
+    else
+    {
+        std::cout << "Failed to get socket file descriptor" << std::endl;
+        return false;
+    }
+}

@@ -15,6 +15,7 @@ namespace KTools::Network::Ssl
         ~Client();
 
         std::string makeRequest(const std::string &hostName);
+        bool setTimeout(const time_t sec, const time_t usec = 0);
     protected:
         Bio *bio = nullptr;
         Ssl *ssl = nullptr;

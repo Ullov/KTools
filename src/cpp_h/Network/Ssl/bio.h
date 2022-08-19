@@ -18,6 +18,7 @@ namespace KTools::Network::Ssl
         bool doHandshake();
         void send(const std::string &requestData, const std::string &hostName);
         std::string receive();
+        bool setInTimeout(const time_t sec, const time_t usec = 0);
     protected:
         BIO *bio = nullptr;
         BIO *bioSsl = nullptr;
