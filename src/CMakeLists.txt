@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.20)
 project(KTools VERSION 0.1.1 LANGUAGES CXX C)
 
 add_compile_definitions(KT_DEBUG)
@@ -6,6 +6,8 @@ set(CMAKE_CXX_STANDART 23)
 set(CMAKE_CXX_STANDART_REQUIRED ON)
 set(MAKE_SHARED ON)
 #set(MAKE_STATIC ON)
+
+add_compile_options(-std=c++23)
 
 set(FILES
     ${CMAKE_CURRENT_LIST_DIR}/cpp_h/HtmlAstMaker/object.cpp
