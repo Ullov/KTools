@@ -11,7 +11,11 @@ void KTools::Network::Header::insert(const std::string &key, const std::string &
 
 void KTools::Network::Header::insert(const std::string &fullLine)
 {
+    if (fullLine.size() == 0)
+        return;
     std::size_t pos = fullLine.find(':');
+    if (pos > fullLine.size())
+        return;
     this->insert(fullLine.substr(0, pos), fullLine.substr(pos + 2));
 }
 
