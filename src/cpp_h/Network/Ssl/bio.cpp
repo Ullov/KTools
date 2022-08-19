@@ -47,7 +47,8 @@ KTools::Network::Ssl::Ssl* KTools::Network::Ssl::Bio::getSslClass()
 void KTools::Network::Ssl::Bio::send(const std::string &requestData, const std::string &hostName)
 {
     std::string request = requestData + "\r\n";
-    request += "Host: " + hostName + "\r\n\r\n";
+    request += "Host: " + hostName + "\r\n";
+    request += "Accept-Encoding: identity\r\n\r\n";
 
     BIO_write(bioSsl, request.data(), request.size());
     BIO_flush(bioSsl);
@@ -57,9 +58,10 @@ std::string KTools::Network::Ssl::Bio::receive()
 {
     std::string result;
     int len = 1;
+    std::size_t bodySize = std::string::npos;
     while (1)
     {
-        char buffer[1024];
+        char buffer[4096];
         int len = BIO_read(bioSsl, buffer, sizeof(buffer));
         if (len < 0)
         {
@@ -75,7 +77,44 @@ std::string KTools::Network::Ssl::Bio::receive()
             break;
         }
         else if (len > 0)
-            result += std::string(buffer, len);
+        {
+            if (bodySize != std::string::npos)
+            {
+                result += std::string(buffer, len);
+                if (header->operator[]("Transfer-Encoding") == "chunked" && result.ends_with("\r\n\r\n"))
+                {
+                    result.resize(result.size() - 7);
+                    break;
+                }
+                else if (header->operator[]("Transfer-Encoding") != "chunked" && bodySize <= result.size())
+                    break;
+            }
+            else
+            {
+                result += std::string(buffer, len);
+                bool condRes = result.contains("\r\n\r\n");
+                if (condRes)
+                {
+                    header->fromRawString(result);
+                    bodySize = std::atoi(header->operator[]("Content-Length").c_str());
+                    if (bodySize > 0)
+                    {
+                        std::size_t pos = result.find("\r\n\r\n");
+                        result = result.substr(pos);
+                        if (bodySize <= result.size())
+                            break;
+                    }
+                    else if (header->operator[]("Transfer-Encoding") == "chunked")
+                    {
+                        std::size_t pos = result.find("\r\n\r\n");
+                        bodySize = std::stoi(result.substr(pos + 4, 4), nullptr, 16);
+                        result = result.substr(pos + 10);
+                        if (bodySize <= result.size())
+                            break;
+                    }
+                }
+            }
+        }
         else if (BIO_should_retry(bio))
             result += this->receive();
         
