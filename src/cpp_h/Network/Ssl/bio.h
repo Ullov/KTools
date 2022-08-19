@@ -4,6 +4,11 @@
 #include <string>
 #include <openssl/bio.h>
 
+namespace KTools::Network
+{
+    class Header;
+}
+
 namespace KTools::Network::Ssl
 {
     class Ssl;
@@ -11,6 +16,7 @@ namespace KTools::Network::Ssl
     {
     public:
         Bio();
+        ~Bio();
 
         void createConnect(const std::string &hostName);
         void makeBioSsl();
@@ -22,6 +28,7 @@ namespace KTools::Network::Ssl
     protected:
         BIO *bio = nullptr;
         BIO *bioSsl = nullptr;
+        Header *header = nullptr;
     };
 }
 

@@ -1,12 +1,23 @@
 #include "./bio.h"
 
 #include "./ssl.h"
+#include "../header.h"
 
 #include <iostream>
 
 #include <openssl/err.h>
+#include <sys/socket.h>
 
-KTools::Network::Ssl::Bio::Bio () {}
+KTools::Network::Ssl::Bio::Bio()
+{
+    header = new Header();
+}
+
+KTools::Network::Ssl::Bio::~Bio()
+{
+    if (header != nullptr)
+        delete header;
+}
 
 void KTools::Network::Ssl::Bio::createConnect(const std::string &hostName)
 {
