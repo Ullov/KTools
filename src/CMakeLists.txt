@@ -22,6 +22,8 @@ set(FILES
     ${CMAKE_CURRENT_LIST_DIR}/cpp_h/Network/Ssl/bio.cpp
     ${CMAKE_CURRENT_LIST_DIR}/cpp_h/Network/Ssl/ssl.cpp
     ${CMAKE_CURRENT_LIST_DIR}/cpp_h/Network/Ssl/client.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/cpp_h/Html/ast.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/cpp_h/Html/tag.cpp
     ${CMAKE_CURRENT_LIST_DIR}/cpp_h/StaticVarsDeclarations.cpp
     ${CMAKE_CURRENT_LIST_DIR}/cpp_h/archiverw.cpp
     ${CMAKE_CURRENT_LIST_DIR}/cpp_h/converter.cpp
@@ -34,7 +36,6 @@ set(FILES
     ${CMAKE_CURRENT_LIST_DIR}/cpp_h/uuidslist.cpp
     ${CMAKE_CURRENT_LIST_DIR}/ktools.cpp
 
-    ${CMAKE_CURRENT_LIST_DIR}/KTools_global.h
     ${CMAKE_CURRENT_LIST_DIR}/cpp_h/Network/connection.h
     ${CMAKE_CURRENT_LIST_DIR}/cpp_h/Network/requesthandler.h
     ${CMAKE_CURRENT_LIST_DIR}/cpp_h/Network/socket.h
@@ -47,6 +48,8 @@ set(FILES
     ${CMAKE_CURRENT_LIST_DIR}/cpp_h/Network/Ssl/bio.h
     ${CMAKE_CURRENT_LIST_DIR}/cpp_h/Network/Ssl/ssl.h
     ${CMAKE_CURRENT_LIST_DIR}/cpp_h/Network/Ssl/client.h
+    ${CMAKE_CURRENT_LIST_DIR}/cpp_h/Html/ast.h
+    ${CMAKE_CURRENT_LIST_DIR}/cpp_h/Html/tag.h
     ${CMAKE_CURRENT_LIST_DIR}/cpp_h/archiverw.h
     ${CMAKE_CURRENT_LIST_DIR}/cpp_h/converter.h
     ${CMAKE_CURRENT_LIST_DIR}/cpp_h/curl.h
@@ -58,6 +61,7 @@ set(FILES
     ${CMAKE_CURRENT_LIST_DIR}/cpp_h/options.h
     ${CMAKE_CURRENT_LIST_DIR}/cpp_h/uuidslist.h
     ${CMAKE_CURRENT_LIST_DIR}/ktools.h
+    ${CMAKE_CURRENT_LIST_DIR}/KTools_global.h
 )
 
 find_package(Qt6 REQUIRED COMPONENTS Core Network)
