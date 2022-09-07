@@ -62,6 +62,11 @@ set(FILES
     ${CMAKE_CURRENT_LIST_DIR}/cpp_h/uuidslist.h
     ${CMAKE_CURRENT_LIST_DIR}/ktools.h
     ${CMAKE_CURRENT_LIST_DIR}/KTools_global.h
+
+# C files
+    ${CMAKE_CURRENT_LIST_DIR}/c/utils.c
+
+    ${CMAKE_CURRENT_LIST_DIR}/c/utils.h
 )
 
 find_package(Qt6 REQUIRED COMPONENTS Core Network)
